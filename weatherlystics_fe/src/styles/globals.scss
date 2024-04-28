@@ -1,1 +1,82 @@
 @use "./_scss/main" as *;
+
+.layout {
+    background-color: #121212;
+    min-height: 100vh;
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: auto;
+}
+
+.header {
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    text-align: center;
+    top: 0;
+    color: #fff;
+    font-size: 3rem;
+    font-weight: 700;
+}
+
+.subheader {
+    
+    background-color: #171717;
+    border-radius: 15px;
+    margin-left: 30rem;
+    margin-right: 30rem;
+    margin-top: 50px; /* Abstand zwischen den Containern */
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+  .container {
+    background-color: #171717;
+    border-radius: 15px;
+    width: 100%;
+    max-width: 1000px;
+    margin-bottom: 50px; /* Abstand zwischen den Containern */
+    /* restliche Stile... */
+  }
+  .form {
+    padding: 1rem;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+  }
+  
+  .form-row {
+    display: flex;
+    gap: 1rem;
+  }
+  
+  label {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    color: #fff;
+  }
+  input[type="text"], input[type="date"] {
+    border-radius: 15px;
+    border: 1px solid #fff;
+    background-color: #121212;
+    color: #fff;
+    padding: 0.5rem;
+    width: 150px; /* Feste Breite */
+    box-sizing: border-box; /* Damit die Breite auch den Rand und das Padding einschließt */
+  }
+  
+  input[type="submit"] {
+    border-radius: 15px;
+    border: 1px solid #fff;
+    background-color: #121212;
+    color: #fff;
+    padding: 0.5rem;
+    width: 100%; /* Feste Breite */
+    box-sizing: border-box; /* Damit die Breite auch den Rand und das Padding einschließt */
+  }
+  
+  

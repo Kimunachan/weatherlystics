@@ -1,95 +1,161 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+"use client";
 
-export default function Home() {
+import { useEffect, useState } from "react";
+import Select from "react-select";
+
+
+
+export default function Page() {
+  const [location, setLocation] = useState({ latitude: '', longitude: '', timezone: ''});
+  const [timezones, setTimezones] = useState([]);
+  const [selectedTimezone, setSelectedTimezone] = useState('');
+  const [error, setError] = useState('');
+  const [city, setCity] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
+
+  
+
+  useEffect(() => {
+    const fetchTimezones = async () => {
+      const res = await fetch('http://worldtimeapi.org/api/timezone');
+      const data = await res.json();
+      setTimezones(data.map(timezone => ({ value: timezone, label: timezone })));
+    };
+    fetchTimezones();
+    if (typeof window !== 'undefined' && navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(success, handleError);
+    } else {
+      setError('Geolocation is not supported by this browser.');
+    }
+  }, []);
+  const handleTimezoneChange = (selectedOption) => {
+    setSelectedTimezone(selectedOption.value);
+  };
+
+  function success(position) {
+    const latitude = position.coords.latitude;
+    const longitude = position.coords.longitude;
+    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+    setLocation({ latitude, longitude, timezone });
+  }
+
+  function handleError(error) {
+    switch (error.code) {
+      case error.PERMISSION_DENIED:
+        setError('User denied the request for Geolocation.');
+        break;
+      case error.POSITION_UNAVAILABLE:
+        setError('Location information is unavailable.');
+        break;
+      case error.TIMEOUT:
+        setError('The request to get user location timed out.');
+        break;
+      default:
+        setError('An unknown error occurred.');
+        break;
+    }
+  }
+
+  const customStyles = {
+    control: (provided) => ({
+      ...provided,
+      height: 30,
+      minHeight: 30,
+      width: 150,
+      fontSize: 12,
+      borderRadius: '5px',
+      borderColor: '#fff',
+      backgroundColor: '#121212',
+      color: '#fff',
+      '&:hover': {
+        borderColor: '#ccc',
+      },
+    }),
+    singleValue: (provided) => ({
+      ...provided,
+      color: '#fff',
+    }),
+    input: (provided) => ({
+      ...provided,
+      color: '#fff',
+    }),
+    dropdownIndicator: (provided) => ({
+      ...provided,
+      color: '#fff',
+    }),
+    clearIndicator: (provided) => ({
+      ...provided,
+      color: '#fff',
+    }),
+    menu: (provided) => ({
+      ...provided,
+      backgroundColor: '#121212',
+      color: '#fff',
+      fontSize: 13,
+      width: 250,
+      
+      // Verstecken Sie die Scrollbar
+      overflow: 'auto',
+      scrollbarWidth: 'none', // Für Firefox
+      '&::-webkit-scrollbar': {
+        display: 'none', // Für Chrome, Safari und Opera
+      },
+    }),
+    option: (provided, state) => ({
+      ...provided,
+      color: state.isSelected ? '#121212' : '#fff',
+      backgroundColor: state.isSelected ? '#fff' : '#121212',
+      '&:hover': {
+        color: '#121212',
+        backgroundColor: '#ccc',
+      },
+    }),
+  };
+  
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.tsx</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
+    <>
+      <div className="header">Weatherlystics</div>
+      <div className="subheader">
+      <form className="form">
+            <div className="form-row">
+              <label>
+                Lat:
+                <input type="text" name="lat" value={location.latitude} />
+              </label>
+              <label>
+                StartDate:
+                <input type="date" name="startDate" />
+              </label>
+            </div>
+            <div className="form-row">
+              <label>
+                Long:
+                <input type="text" name="long" value={location.longitude} />
+              </label>
+              <label>
+                EndDate:
+                <input type="date" name="endDate" />
+              </label>
+            </div>
+            <div className="form-row">
+              <label>
+              Timezone:
+                <Select
+                styles={customStyles}
+                  options={timezones}
+                  onChange={handleTimezoneChange}
+                  value={timezones.find(timezone => timezone.value === selectedTimezone)}
+                  classNamePrefix="react-select"
+                />
+              </label>
+              <label>
+                Pick city
+                <input type="Text" name="endDate" />
+              </label>
+            </div>
+          </form>
       </div>
-
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+    </>
   );
 }

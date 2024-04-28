@@ -1,7 +1,7 @@
-import type { Metadata } from "next";
-import "./globals.scss";
 import ReactQueryProvider from "@/components/ReactQueryProvider";
+import type { Metadata } from "next";
 import { ToastContainer } from "react-toastify";
+import "../styles/globals.scss";
 
 export const metadata: Metadata = {
   title: "Weatherlystics",
@@ -16,7 +16,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="de">
-      <body>
+      <body className="layout">
         <ReactQueryProvider>
           <ToastContainer
             autoClose={5000}
@@ -27,7 +27,9 @@ export default function RootLayout({
             pauseOnHover
             theme="dark"
           />
-          {children}
+          <div className="content">
+            {children}
+          </div>
         </ReactQueryProvider>
       </body>
     </html>
