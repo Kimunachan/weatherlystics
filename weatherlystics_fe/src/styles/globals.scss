@@ -20,7 +20,7 @@
     font-weight: 700;
 }
 
-.subheader {
+.card {
     
     background-color: #171717;
     border-radius: 15px;
@@ -31,14 +31,7 @@
     align-items: center;
     flex-direction: column;
 }
-  .container {
-    background-color: #171717;
-    border-radius: 15px;
-    width: 100%;
-    max-width: 1000px;
-    margin-bottom: 50px; /* Abstand zwischen den Containern */
-    /* restliche Stile... */
-  }
+  
   .form {
     padding: 1rem;
     text-align: left;
@@ -59,7 +52,7 @@
     gap: 0.5rem;
     color: #fff;
   }
-  input[type="text"], input[type="date"] {
+  input[type="text"], input[type="date"], input[type="submit"] {
     border-radius: 15px;
     border: 1px solid #fff;
     background-color: #121212;
@@ -69,14 +62,5 @@
     box-sizing: border-box; /* Damit die Breite auch den Rand und das Padding einschließt */
   }
   
-  input[type="submit"] {
-    border-radius: 15px;
-    border: 1px solid #fff;
-    background-color: #121212;
-    color: #fff;
-    padding: 0.5rem;
-    width: 100%; /* Feste Breite */
-    box-sizing: border-box; /* Damit die Breite auch den Rand und das Padding einschließt */
-  }
   
   

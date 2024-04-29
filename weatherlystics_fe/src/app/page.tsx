@@ -115,9 +115,13 @@ export default function Page() {
   
   return (
     <>
+    <header>
       <div className="header">Weatherlystics</div>
-      <div className="subheader">
-      <form className="form">
+    </header>
+      
+      <main>
+        <div className="card">
+          <form className="form">
             <div className="form-row">
               <label>
                 Lat:
@@ -155,7 +159,11 @@ export default function Page() {
               </label>
             </div>
           </form>
-      </div>
+        </div>
+      </main>
+      <footer>
+
+      </footer>
     </>
   );
 }
