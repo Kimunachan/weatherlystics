@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Select from "react-select";
-
+import styles from "../styles/pages/page.module.scss";
 
 
 export default function Page() {
@@ -56,15 +56,23 @@ export default function Page() {
         break;
     }
   }
+  //Show second date Picker
+  const [showSecondDate, setShowSecondDate] = useState(false);
 
+  const toggleSecondDate = (event) => {
+    event.preventDefault();
+    setShowSecondDate(!showSecondDate);
+  };
+
+  //Custom styles for react-select
   const customStyles = {
     control: (provided) => ({
       ...provided,
-      height: 30,
+      height: 35,
       minHeight: 30,
       width: 150,
       fontSize: 12,
-      borderRadius: '5px',
+      borderRadius: '15px',
       borderColor: '#fff',
       backgroundColor: '#121212',
       color: '#fff',
@@ -112,7 +120,9 @@ export default function Page() {
       },
     }),
   };
-  
+  //date picker
+  const DateValueOne = new Date().toISOString().split('T')[0];
+  const DateValueTwo = new Date().toISOString().split('T')[0];
   return (
     <>
     <header>
@@ -128,9 +138,18 @@ export default function Page() {
                 <input type="text" name="lat" value={location.latitude} />
               </label>
               <label>
-                StartDate:
-                <input type="date" name="startDate" />
+                Date:
+                <input type="date" name="" value={DateValueOne} />
               </label>
+              <button className={styles.circleButton} onClick={toggleSecondDate}>
+              {showSecondDate ? '-' : '+'}
+            </button>
+            {showSecondDate && (
+              <label>
+                Second Date:
+                <input type="date" name="secondDate" value={DateValueTwo} />
+              </label>
+            )}
             </div>
             <div className="form-row">
               <label>
@@ -138,13 +157,7 @@ export default function Page() {
                 <input type="text" name="long" value={location.longitude} />
               </label>
               <label>
-                EndDate:
-                <input type="date" name="endDate" />
-              </label>
-            </div>
-            <div className="form-row">
-              <label>
-              Timezone:
+                Timezone:
                 <Select
                 styles={customStyles}
                   options={timezones}
@@ -153,16 +166,26 @@ export default function Page() {
                   classNamePrefix="react-select"
                 />
               </label>
+            </div>
+            <div className="form-row">
+              
               <label>
                 Pick city
-                <input type="Text" name="endDate" />
+                <input type="Text" name="City Picker" />
+              </label>
+              <label>
+
+                <button className={styles.normalButton} type="submit">Submit</button>
               </label>
             </div>
           </form>
         </div>
-      </main>
-      <footer>
 
+      </main>
+      <footer className="footer">
+        <div className="footer-content">
+          <p>© 2024 Weatherlystics</p>
+        </div>
       </footer>
     </>
   );

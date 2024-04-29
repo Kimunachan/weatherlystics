@@ -61,6 +61,21 @@
     width: 150px; /* Feste Breite */
     box-sizing: border-box; /* Damit die Breite auch den Rand und das Padding einschließt */
   }
+  .footer {
+    position: flex;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-color: #121212;
+    border-radius: 15px;
+    margin-left: 30rem;
+    margin-right: 30rem;
+    padding: 1rem;
+    text-align: center;
+    color: #fff;
+    
+  }
+  //button style round white border and black background
   
   
   
