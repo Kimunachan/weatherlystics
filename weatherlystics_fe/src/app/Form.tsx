@@ -6,7 +6,7 @@ import Select from "react-select";
 import styles from "../styles/pages/page.module.scss";
 
 type FormProps = {
-  location: { latitude: string; longitude: string };
+  location: { latitude: number; longitude: number };
   DateValue: string;
   showSecondDate: boolean;
   toggleSecondDate: (event: React.MouseEvent<HTMLButtonElement>) => void;

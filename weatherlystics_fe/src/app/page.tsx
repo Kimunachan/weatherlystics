@@ -5,9 +5,10 @@ import styles from "../styles/pages/page.module.scss";
 import Form from "./Form";
 
 const Page = () => {
-  const [location, setLocation] = useState({ latitude: "", longitude: "" });
+  const [latitude, setLatitude] = useState(0);
+  const [longitude, setLongitude] = useState(0);
 
-  const getGeolocation = (event: any) => {
+  const getGeolocation = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
 
     if (typeof window !== "undefined" && navigator.geolocation) {
@@ -17,17 +18,19 @@ const Page = () => {
     }
   };
 
-  function success(position: any) {
+  function success(position: GeolocationPosition) {
     const latitude = position.coords.latitude;
     const longitude = position.coords.longitude;
-    setLocation({ latitude, longitude });
+    setLatitude(latitude);
+    setLongitude(longitude);
   }
 
+  const DateValue = new Date().toISOString().split("T")[0];
   const DateValue = new Date().toISOString().split("T")[0];
 
   const [showSecondDate, setShowSecondDate] = useState(false);
 
-  const toggleSecondDate = (event: any) => {
+  const toggleSecondDate = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     setShowSecondDate(!showSecondDate);
   };
@@ -41,7 +44,7 @@ const Page = () => {
       <main className={styles.main}>
         <div className="card">
           <Form
-            location={location}
+            location={{ latitude, longitude }}
             DateValue={DateValue}
             showSecondDate={showSecondDate}
             toggleSecondDate={toggleSecondDate}
