@@ -16,7 +16,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="de">
-      <body className="layout">
+      <body >
         <ReactQueryProvider>
           <ToastContainer
             autoClose={5000}
@@ -27,9 +27,7 @@ export default function RootLayout({
             pauseOnHover
             theme="dark"
           />
-          <div className="content">
             {children}
-          </div>
         </ReactQueryProvider>
       </body>
     </html>

@@ -2,7 +2,6 @@ export const customStyles = {
     control: (provided) => ({
       ...provided,
       height: 35,
-      minHeight: 30,
       width: 150,
       fontSize: 12,
       borderRadius: '15px',
@@ -16,10 +15,16 @@ export const customStyles = {
     singleValue: (provided) => ({
       ...provided,
       color: '#fff',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
     }),
     input: (provided) => ({
       ...provided,
       color: '#fff',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
     }),
     dropdownIndicator: (provided) => ({
       ...provided,
@@ -35,6 +40,7 @@ export const customStyles = {
       color: '#fff',
       fontSize: 13,
       width: 250,
+      
       
       // Verstecken Sie die Scrollbar
       overflow: 'auto',

@@ -36,7 +36,7 @@ const Page = () => {
   };
 
   return (
-    <div className={styles.container}>
+    <>
       <header className={styles.header}>
         <div className="header">Weatherlystics</div>
       </header>
@@ -59,10 +59,10 @@ const Page = () => {
 
       <footer className="footer">
         <div className="footer-content">
-          <p>© 2024 Weatherlystics</p>
+          <p>&copy; 2024 Weatherlystics</p>
         </div>
       </footer>
-    </div>
+    </>
   );
 };
 

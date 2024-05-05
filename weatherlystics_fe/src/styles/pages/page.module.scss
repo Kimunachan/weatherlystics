@@ -6,8 +6,8 @@
     background-color: #121212;
     margin-top: 30px;
     color: #fff;
-    height: 20px;
-    width: 20px; /* Feste Breite */
+    height: 30px;
+    width: 30px; /* Feste Breite */
     box-sizing: border-box; /* Damit die Breite auch den Rand und das Padding einschließt */
   }
   .normalButton {
@@ -17,6 +17,22 @@
     color: #fff;
     padding: 0.5rem;
     margin-top: 23px;
+    height: 35px;
     width: 150px; /* Feste Breite */
     box-sizing: border-box; /* Damit die Breite auch den Rand und das Padding einschließt */
+  }
+  .longButton {
+    border-radius: 15px;
+    border: 1px solid #fff;
+    background-color: #121212;
+    color: #fff;
+    padding: 0.5rem;
+    margin-top: 23px;
+    height: 35px;
+    width: auto; /* Feste Breite */
+    box-sizing: border-box; /* Damit die Breite auch den Rand und das Padding einschließt */
+  }
+  .formGen{
+    display : flex;
+    flex-direction: row;
   }

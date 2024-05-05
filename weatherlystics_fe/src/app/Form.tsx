@@ -1,8 +1,14 @@
 import { customStyles } from "@/utils/constants";
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useState } from "react";
+import { useForm } from 'react-hook-form';
 import Select from "react-select";
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { z } from 'zod';
+import "../styles/globals.scss";
 import styles from "../styles/pages/page.module.scss";
 
 type FormProps = {
@@ -12,6 +18,14 @@ type FormProps = {
   toggleSecondDate: (event: React.MouseEvent<HTMLButtonElement>) => void;
   getGeolocation: (event: React.MouseEvent<HTMLButtonElement>) => void;
 };
+
+const schema = z.object({
+  lat: z.number(),
+  long: z.number(),
+  timezone: z.string(),
+  date: z.string(),
+  secondDate: z.string().optional(),
+});
 
 const Form = ({
   location,
@@ -24,6 +38,33 @@ const Form = ({
     value: string;
     label: string;
   }>();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(schema),
+  });
+
+  const onSubmit = (data: any) => {
+    console.log(data);
+  };
+  const onError = (errors: any) => {
+    if (errors.lat) {
+        toast.error(String(errors.lat.message));
+      }
+      if (errors.long) {
+        toast.error(String(errors.long.message));
+      }
+      if (errors.date) {
+        toast.error(String(errors.date.message));
+      }
+      if (errors.secondDate) {
+        toast.error(String(errors.secondDate.message));
+      }
+    };
+
 
   const {
     data: timezones,
@@ -41,6 +82,7 @@ const Form = ({
       }));
     },
   });
+
   const handleTimezoneChange = (
     selectedOption: { value: string; label: string } | null
   ) => {
@@ -48,71 +90,59 @@ const Form = ({
       setSelectedTimezone(selectedOption);
     }
   };
-
   if (isLoadingTimezones) return <div>Loading...</div>;
-  if (isError) console.error("Error fetching timezones"); //TODO: Toast
+    if (isError) toast.error("Error fetching timezones");
 
   return (
-    <form className="form">
+    <>
+    <form className="form" onSubmit={handleSubmit(onSubmit, onError)} >
       <div className="form-row">
         <label>
-          Latitude:
-          <input
-            type="text"
-            name="lat"
-            defaultValue={location?.latitude || ""}
-          />
+            Latitude:
+            <input type="text" {...register('lat')} defaultValue={location?.latitude || ''} />
+            {errors.lat && <p>{String(errors.lat.message)}</p>}
         </label>
         <label>
-          Date:
-          <input type="date" name="" defaultValue={DateValue} />
+            Longitude:
+            <input type="text" {...register('long')} defaultValue={location?.longitude || ''} />
+            {errors.long && <p>{String(errors.long.message)}</p>}
         </label>
-        <button className={styles.circleButton} onClick={toggleSecondDate}>
-          {showSecondDate ? "-" : "+"}
-        </button>
-        {showSecondDate && (
-          <label>
-            Second Date:
-            <input type="date" name="secondDate" defaultValue={DateValue} />
-          </label>
-        )}
+        
       </div>
       <div className="form-row">
-        <label>
-          Long:
-          <input
-            type="text"
-            name="long"
-            defaultValue={location?.longitude || ""}
-          />
-        </label>
-
         <label>
           Timezone:
-          <Select
-            styles={customStyles}
-            options={timezones!}
-            isLoading={isLoadingTimezones}
-            onChange={handleTimezoneChange}
-            value={selectedTimezone}
-          />
+        <Select
+          isLoading={isLoadingTimezones}
+          options={timezones}
+          styles={customStyles}
+          onChange={handleTimezoneChange}
+          value={selectedTimezone}
+        />
         </label>
+        <button className={styles.normalButton} onClick={getGeolocation}>Use my location</button>
       </div>
       <div className="form-row">
-        <button className={styles.normalButton} onClick={getGeolocation}>
-          Use my location
+        <label>
+          Date:
+          <input type="date" {...register('date')} defaultValue={DateValue} />
+          {errors.date && <p>{String(errors.date.message)}</p>}
+        </label>
+        {showSecondDate && (
+          <label>
+            Second Date
+            <input type="date" {...register('secondDate')} defaultValue={DateValue}/>
+            {errors.secondDate && <p>{String(errors.secondDate.message)}</p>}
+          </label>
+        )}
+        <button className={styles.circleButton} onClick={toggleSecondDate}>
+          {showSecondDate ? '-' : 'add'}
         </button>
-        <label>
-          Pick city
-          <input type="Text" name="City Picker" />
-        </label>
-        <label>
-          <button className={styles.normalButton} type="submit">
-            Submit
-          </button>
-        </label>
       </div>
+      <button className={styles.longButton} type="submit">Submit</button>
     </form>
+    <ToastContainer />
+    </>
   );
 };
 
