@@ -50,20 +50,7 @@ const Form = ({
   const onSubmit = (data: any) => {
     console.log(data);
   };
-  const onError = (errors: any) => {
-    if (errors.lat) {
-        toast.error(String(errors.lat.message));
-      }
-      if (errors.long) {
-        toast.error(String(errors.long.message));
-      }
-      if (errors.date) {
-        toast.error(String(errors.date.message));
-      }
-      if (errors.secondDate) {
-        toast.error(String(errors.secondDate.message));
-      }
-    };
+  
 
 
   const {
@@ -95,7 +82,7 @@ const Form = ({
 
   return (
     <>
-    <form className="form" onSubmit={handleSubmit(onSubmit, onError)} >
+    <form className="form" onSubmit={handleSubmit(onSubmit)} >
       <div className="form-row">
         <label>
             Latitude:
