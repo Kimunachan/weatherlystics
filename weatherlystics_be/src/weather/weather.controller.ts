@@ -1,5 +1,12 @@
-import { Controller, Get, Inject, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Inject,
+  Query,
+  UseInterceptors,
+} from '@nestjs/common';
 import { WeatherService } from './weather.service';
+import { CacheInterceptor } from '@nestjs/cache-manager';
 
 @Controller('weather')
 export class WeatherController {
