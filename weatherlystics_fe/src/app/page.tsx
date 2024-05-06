@@ -8,22 +8,7 @@ const Page = () => {
   const [latitude, setLatitude] = useState(0);
   const [longitude, setLongitude] = useState(0);
 
-  const getGeolocation = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-
-    if (typeof window !== "undefined" && navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(success);
-    } else {
-      console.error("Geolocation is not supported by this browser.");
-    }
-  };
-
-  function success(position: GeolocationPosition) {
-    const latitude = position.coords.latitude;
-    const longitude = position.coords.longitude;
-    setLatitude(latitude);
-    setLongitude(longitude);
-  }
+  
 
   const DateValue = new Date().toISOString().split("T")[0];
   const DateValue = new Date().toISOString().split("T")[0];
@@ -48,7 +33,7 @@ const Page = () => {
             DateValue={DateValue}
             showSecondDate={showSecondDate}
             toggleSecondDate={toggleSecondDate}
-            getGeolocation={getGeolocation}
+            
           />
         </div>
         <div className={styles.sectionTwo}>
