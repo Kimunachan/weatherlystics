@@ -1,40 +1,39 @@
+"use client";
 import { customStyles } from "@/utils/constants";
-import { zodResolver } from '@hookform/resolvers/zod';
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useState } from "react";
-import { useForm } from 'react-hook-form';
+import { useForm } from "react-hook-form";
 import Select from "react-select";
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { z } from 'zod';
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { z } from "zod";
 import "../styles/globals.scss";
 import styles from "../styles/pages/page.module.scss";
 
-type FormProps = {
-  location: { latitude: number; longitude: number };
-  DateValue: string;
-  showSecondDate: boolean;
-  toggleSecondDate: (event: React.MouseEvent<HTMLButtonElement>) => void;
-};
+type FormProps = {};
 
 const schema = z.object({
-  lat: z.number(),
-  long: z.number(),
+  lat: z
+    .number()
+    .min(-90, "Latitude needs to be at least -90")
+    .max(90, "Latitude cant be greater than 90"),
+  long: z
+    .number()
+    .min(-180, "Longitude needs to be at least -180")
+    .max(180, "Longitude cant be greater than 180"),
   timezone: z.string(),
   date: z.date(),
   secondDate: z.date().optional(),
 });
 
-const Form = ({
-  DateValue,
-  showSecondDate,
-  toggleSecondDate,
-}: FormProps) => {
-  const[location, setLocation] = useState({latitude: 0, longitude: 0});
-  const [lat, setLat] = useState(location?.latitude || '');
-  const [long, setLong] = useState(location?.longitude || '');
-  
+export default function Form({}: FormProps) {
+  const dateValue = new Date();
+
+  const [showSecondDate, setShowSecondDate] = useState(false);
+  const toggleSecondDate = () => setShowSecondDate(!showSecondDate);
+
   const [selectedTimezone, setSelectedTimezone] = useState<{
     value: string;
     label: string;
@@ -43,30 +42,33 @@ const Form = ({
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
-  } = useForm({
+  } = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
+    mode: "onBlur",
+    reValidateMode: "onBlur",
+    defaultValues: {
+      lat: 0,
+      long: 0,
+    },
   });
 
-  const onSubmit = (data: any) => {
-    data.lat = parseFloat(data.lat);
-    data.long = parseFloat(data.long);
+  const onSubmit = handleSubmit((data) => {
     console.log(data);
-  };
-  
+  });
+
   const useMyLocation = async () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
         const { latitude, longitude } = position.coords;
-        setLocation({ latitude, longitude });
-        setLat(Number(latitude));
-        setLong(Number(longitude));
+        setValue("lat", latitude);
+        setValue("long", longitude);
       });
     } else {
       toast.error("Geolocation is not supported by this browser.");
     }
   };
-
 
   const {
     data: timezones,
@@ -90,69 +92,97 @@ const Form = ({
   ) => {
     if (selectedOption) {
       setSelectedTimezone(selectedOption);
+      setValue("timezone", selectedOption.value);
     }
   };
-  const handleLatChange = (event:any) => {
-    setLat(event.target.value);
+  const handleLatChange = (event: any) => {
+    setValue("lat", event.target.value);
   };
-  
-  const handleLongChange = (event:any) => {
-    setLong(event.target.value);
+
+  const handleLongChange = (event: any) => {
+    setValue("long", event.target.value);
   };
   if (isLoadingTimezones) return <div>Loading...</div>;
-    if (isError) toast.error("Error fetching timezones");
+  if (isError) toast.error("Error fetching timezones");
 
   return (
     <>
-    <form className="form" onSubmit={handleSubmit(onSubmit)} >
-      <div className="form-row">
-      <label>
-        Latitude:
-          <input type="number" {...register('lat')} value={lat} onChange={handleLatChange} />
-          {errors.lat && <p>{String(errors.lat.message)}</p>}
-        </label>
-        <label>
-          Longitude:
-          <input type="number" {...register('long')} value={long} onChange={handleLongChange} />
-          {errors.long && <p>{String(errors.long.message)}</p>}
-        </label>
-        
-      </div>
-      <div className="form-row">
-        <label>
-          Timezone:
-        <Select
-          isLoading={isLoadingTimezones}
-          options={timezones}
-          styles={customStyles}
-          onChange={handleTimezoneChange}
-          value={selectedTimezone}
-        />
-        </label>
-        <button type="button" className={styles.normalButton} onClick={useMyLocation}>Use my location</button>
-      </div>
-      <div className="form-row">
-        <label>
-          Date:
-          <input type="date" {...register('date')} defaultValue={DateValue} />
-          {errors.date && <p>{String(errors.date.message)}</p>}
-        </label>
-        {showSecondDate && (
+      <form className="form" onSubmit={onSubmit}>
+        <div className="form-row">
           <label>
-            Second Date
-            <input type="date" {...register('secondDate')} defaultValue={DateValue}/>
-            {errors.secondDate && <p>{String(errors.secondDate.message)}</p>}
+            Latitude:
+            <input
+              type="number"
+              step={0.0000001}
+              {...register("lat", { required: true, valueAsNumber: true })}
+              onChange={handleLatChange}
+            />
+            {errors.lat && <p>{errors.lat.message}</p>}
           </label>
-        )}
-        <button className={styles.circleButton} onClick={toggleSecondDate}>
-          {showSecondDate ? '-' : 'add'}
+          <label>
+            Longitude:
+            <input
+              type="number"
+              step={0.0000001}
+              {...register("long", { required: true, valueAsNumber: true })}
+              onChange={handleLongChange}
+            />
+            {errors.long && <p>{errors.long.message}</p>}
+          </label>
+        </div>
+        <div className="form-row">
+          <label>
+            Timezone:
+            <Select
+              isLoading={isLoadingTimezones}
+              options={timezones}
+              styles={customStyles}
+              onChange={handleTimezoneChange}
+              value={selectedTimezone}
+            />
+            {errors.timezone && <p>{errors.timezone.message}</p>}
+          </label>
+          <button
+            type="button"
+            className={styles.normalButton}
+            onClick={useMyLocation}
+          >
+            Use my location
+          </button>
+        </div>
+        <div className="form-row">
+          <label>
+            Date:
+            <input
+              type="date"
+              defaultValue={dateValue.toISOString().split("T")[0]}
+              {...register("date", {
+                required: true,
+                valueAsDate: true,
+              })}
+            />
+            {errors.date && <p>{errors.date.message}</p>}
+          </label>
+          {showSecondDate && (
+            <label>
+              Second Date
+              <input
+                type="date"
+                defaultValue={dateValue.toISOString().split("T")[0]}
+                {...register("secondDate", { valueAsDate: true })}
+              />
+              {errors.secondDate && <p>{errors.secondDate.message}</p>}
+            </label>
+          )}
+          <button className={styles.circleButton} onClick={toggleSecondDate}>
+            {showSecondDate ? "-" : "add"}
+          </button>
+        </div>
+        <button className={styles.longButton} type="submit">
+          Submit
         </button>
-      </div>
-      <button className={styles.longButton} type="submit">Submit</button>
-    </form>
-    <ToastContainer />
+      </form>
+      <ToastContainer />
     </>
   );
-};
-
-export default Form;
+}
