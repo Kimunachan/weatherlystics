@@ -1,3 +1,4 @@
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import {
   BadRequestException,
   Inject,
@@ -5,19 +6,32 @@ import {
   Logger,
   LoggerService,
 } from '@nestjs/common';
+import { Cache } from 'cache-manager';
 
 import { fetchWeatherApi } from 'openmeteo';
 import { range } from 'src/utils/functions';
 
 @Injectable()
 export class WeatherService {
-  constructor(@Inject(Logger) private readonly logger: LoggerService) {}
+  constructor(
+    @Inject(Logger) private readonly logger: LoggerService,
+    @Inject(CACHE_MANAGER) private cacheManager: Cache,
+  ) {}
 
   async getWeather(lon: number, lat: number) {
     if (!lat || !lon)
       throw new BadRequestException('Latitude and Longitude are required');
 
     this.logger.log(`Fetching weather data for Lat: ${lat}, Lon: ${lon}`);
+    const cacheData = await this.cacheManager.get(`weather-${lat}-${lon}`);
+
+    if (cacheData) {
+      this.logger.log('Data found in cache');
+      return cacheData;
+    }
+
+    this.logger.log('Data not found in cache, fetching from API');
+
     const queryParams = {
       latitude: lat,
       longitude: lon,
@@ -110,6 +124,21 @@ export class WeatherService {
         apparentTemperatureMin: weatherData.daily.apparentTemperatureMin[i],
       });
     }
+
+    await this.cacheManager.set(`weather-${lat}-${lon}`, {
+      latitude,
+      longitude,
+      timezone,
+      timezoneAbbreviation,
+      current: {
+        time: weatherData.current.time,
+        temperature2m: weatherData.current.temperature2m,
+        relativeHumidity2m: weatherData.current.relativeHumidity2m,
+        apparentTemperature: weatherData.current.apparentTemperature,
+      },
+      hourly: hourlyMatched,
+      daily: dailyMatched,
+    });
 
     return {
       latitude,
