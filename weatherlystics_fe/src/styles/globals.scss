@@ -10,8 +10,8 @@
 
 .body {
   background-color: #121212;
-  min-height: 100vh;
-  padding: 50px;
+  min-height: 100%;
+  padding: 3rem;
   display: flex;
   flex-direction: column;
   align-items: auto;
@@ -30,8 +30,8 @@
 
 .card {
   background-color: #171717;
-  border-radius: 15px;
-  margin-top: 50px; /* Abstand zwischen den Containern */
+  border-radius: 0.9rem;
+  margin-top: 3.125rem; /* Abstand zwischen den Containern */
   flex-direction: column;
   display: flex;
   justify-content: center;
@@ -60,13 +60,13 @@ label {
 input[type="text"],
 input[type="date"],
 input[type="submit"] {
-  border-radius: 15px;
+  border-radius: 0.9rem;
   border: 1px solid #fff;
   background-color: #121212;
   color: #fff;
   padding: 0.5rem;
-  width: 150px; /* Feste Breite */
-  height: 35px;
+  width: 9.375rem; /* Feste Breite */
+  height: 2.1875rem;
   box-sizing: border-box; /* Damit die Breite auch den Rand und das Padding einschließt */
 }
 .footer {
@@ -74,12 +74,11 @@ input[type="submit"] {
   bottom: 0;
   right: 0;
   background-color: #121212;
-  border-radius: 15px;
+  border-radius: 1rem;
   padding: 1rem;
   text-align: center;
   color: #fff;
 }
-//button style round white border and black background
 select,
 textarea,
 input,
