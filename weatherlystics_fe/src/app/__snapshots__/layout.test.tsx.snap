@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Root Layout should render the root layout 1`] = `
+<div>
+  <html
+    lang="de"
+  >
+    <body>
+      <div
+        class="Toastify"
+      />
+      <div
+        data-testid="dummy"
+      />
+    </body>
+  </html>
+</div>
+`;
