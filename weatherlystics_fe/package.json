@@ -12,25 +12,30 @@
     "test:coverage": "jest --config=jest.config.ts --coverage"
   },
   "dependencies": {
+    "@hookform/resolvers": "^3.3.4",
     "@tanstack/react-query": "^5.29.2",
     "@tanstack/react-query-devtools": "^5.29.2",
     "axios": "^1.6.8",
     "next": "14.2.1",
     "react": "^18",
     "react-dom": "^18",
-    "react-hook-form": "^7.51.3",
+    "react-hook-form": "^7.51.4",
+    "react-query": "^3.39.3",
+    "react-select": "^5.8.0",
     "react-toastify": "^10.0.5",
     "sass": "^1.75.0",
-    "zod": "^3.22.5"
+    "zod": "^3.23.6"
   },
   "devDependencies": {
     "@tanstack/eslint-plugin-query": "^5.28.11",
     "@testing-library/jest-dom": "^6.4.5",
     "@testing-library/react": "^15.0.6",
     "@testing-library/user-event": "^14.5.2",
+    "@types/jest": "^29.5.12",
     "@types/node": "^20.12.7",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "axios-mock-adapter": "^1.22.0",
     "eslint": "^8",
     "eslint-config-next": "14.2.1",
     "eslint-plugin-jest-dom": "^5.4.0",

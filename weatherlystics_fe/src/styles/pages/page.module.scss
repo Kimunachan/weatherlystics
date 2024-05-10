@@ -1,0 +1,38 @@
+
+
+  .circleButton {
+    border-radius: 1.25rem;
+    border: 1px solid #fff;
+    background-color: #121212;
+    margin-top: 30px;
+    color: #fff;
+    height: 2rem;
+    width: 2rem; /* Feste Breite */
+    box-sizing: border-box; /* Damit die Breite auch den Rand und das Padding einschließt */
+  }
+  .normalButton {
+    border-radius: 0.9rem;
+    border: 1px solid #fff;
+    background-color: #121212;
+    color: #fff;
+    padding: 0.5rem;
+    margin-top: 1.4375rem;
+    height: 2.1875rem;
+    width: 9.375rem; /* Feste Breite */
+    box-sizing: border-box; /* Damit die Breite auch den Rand und das Padding einschließt */
+  }
+  .longButton {
+    border-radius: 0.9rem;
+    border: 1px solid #fff;
+    background-color: #121212;
+    color: #fff;
+    padding: 0.5rem;
+    margin-top: 1.4375rem;
+    height: 2.1875rem;
+    width: auto; /* Feste Breite */
+    box-sizing: border-box; /* Damit die Breite auch den Rand und das Padding einschließt */
+  }
+  .formGen{
+    display : flex;
+    flex-direction: row;
+  }
