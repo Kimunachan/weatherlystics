@@ -156,9 +156,6 @@ exports[`Main Page should render the main page 1`] = `
             Submit
           </button>
         </form>
-        <div
-          class="Toastify"
-        />
       </div>
       <div
         class="sectionTwo"

@@ -1,7 +1,7 @@
 "use client";
-import { customStyles } from "@/utils/constants";
+import { BASE_URL, customStyles } from "@/utils/constants";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -11,6 +11,13 @@ import "react-toastify/dist/ReactToastify.css";
 import { z } from "zod";
 import "../styles/globals.scss";
 import styles from "../styles/pages/page.module.scss";
+
+import { WeatherDataType } from "@/utils/types";
+
+import "chart.js/auto";
+import { Line } from "react-chartjs-2";
+import { ChartData } from "chart.js/auto";
+import { reformData } from "@/utils/function";
 
 type FormProps = {};
 
@@ -33,6 +40,24 @@ export default function Form({}: FormProps) {
 
   const [showSecondDate, setShowSecondDate] = useState(false);
   const toggleSecondDate = () => setShowSecondDate(!showSecondDate);
+  const [weatherData, setWeatherData] = useState<WeatherDataType>();
+  const getWeatherData = useMutation({
+    mutationFn: async ({ lat, lon }: { lat: number; lon: number }) => {
+      const response = await axios.get(
+        `${BASE_URL}/weather?lat=${lat}&lon=${lon}`
+      );
+      return response.data;
+    },
+    mutationKey: ["weatherData"],
+    onError: (error) => {
+      toast.error(`Error fetching weather data: ${error}`);
+    },
+    onSuccess: (data) => {
+      toast.success(`Weather data fetched successfully`);
+      console.log(data);
+      setWeatherData(data);
+    },
+  });
 
   const [selectedTimezone, setSelectedTimezone] = useState<{
     value: string;
@@ -55,7 +80,10 @@ export default function Form({}: FormProps) {
   });
 
   const onSubmit = handleSubmit((data) => {
-    console.log(data);
+    getWeatherData.mutate({
+      lat: data.lat,
+      lon: data.long,
+    });
   });
 
   const useMyLocation = async () => {
@@ -102,6 +130,11 @@ export default function Form({}: FormProps) {
   const handleLongChange = (event: any) => {
     setValue("long", event.target.value);
   };
+
+  const chartData: ChartData<"line", number[], string> | null = weatherData
+    ? reformData(weatherData).hourlyData
+    : null;
+
   if (isLoadingTimezones) return <div>Loading...</div>;
   if (isError) toast.error("Error fetching timezones");
 
@@ -182,7 +215,36 @@ export default function Form({}: FormProps) {
           Submit
         </button>
       </form>
-      <ToastContainer />
+
+      {chartData && (
+        <Line
+          data={chartData}
+          options={{
+            scales: {
+              "y-axis-temp": {
+                type: "linear",
+                display: true,
+                position: "left",
+                title: {
+                  display: true,
+                  text: "Temperature (°C)",
+                },
+                beginAtZero: true,
+              },
+              "y-axis-humid": {
+                type: "linear",
+                display: true,
+                position: "right",
+                title: {
+                  display: true,
+                  text: "Humidity (%)",
+                },
+                beginAtZero: true,
+              },
+            },
+          }}
+        />
+      )}
     </>
   );
 }

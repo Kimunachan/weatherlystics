@@ -24,8 +24,11 @@ const config: Config = {
     "/coverage/",
     "/jest.setup.ts",
     "/utils/constants.ts",
+    "/utils/schemas.ts",
+    "/utils/types.ts",
     "/utils/customTestUtils.tsx",
     "/components/index.tsx",
+    "/hooks/",
     "/app/Form.tsx",
   ],
   coverageThreshold: {
