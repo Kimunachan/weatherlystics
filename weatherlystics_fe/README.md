@@ -39,3 +39,11 @@ yarn build
 
 yarn start
 ```
+
+Libraries used:
+
+- [Next.js](https://nextjs.org/)
+- [React](https://reactjs.org/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Chart.js](https://www.chartjs.org/)
+- [Axios](https://axios-http.com/docs/intro)
