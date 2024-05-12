@@ -6,7 +6,7 @@ import axios from "axios";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import Select from "react-select";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { z } from "zod";
 import "../styles/globals.scss";
@@ -14,12 +14,12 @@ import styles from "../styles/pages/page.module.scss";
 
 import { WeatherDataType } from "@/utils/types";
 
-import "chart.js/auto";
-import { Line } from "react-chartjs-2";
-import { ChartData } from "chart.js/auto";
-import { reformData } from "@/utils/function";
 
-type FormProps = {};
+
+type FormProps = {
+  setWeatherData: (data: WeatherDataType) => void;
+
+};
 
 const schema = z.object({
   lat: z
@@ -35,12 +35,12 @@ const schema = z.object({
   secondDate: z.date().optional(),
 });
 
-export default function Form({}: FormProps) {
+export default function Form({setWeatherData}: FormProps) {
   const dateValue = new Date();
 
   const [showSecondDate, setShowSecondDate] = useState(false);
   const toggleSecondDate = () => setShowSecondDate(!showSecondDate);
-  const [weatherData, setWeatherData] = useState<WeatherDataType>();
+  
   const getWeatherData = useMutation({
     mutationFn: async ({ lat, lon }: { lat: number; lon: number }) => {
       const response = await axios.get(
@@ -54,7 +54,6 @@ export default function Form({}: FormProps) {
     },
     onSuccess: (data) => {
       toast.success(`Weather data fetched successfully`);
-      console.log(data);
       setWeatherData(data);
     },
   });
@@ -131,9 +130,7 @@ export default function Form({}: FormProps) {
     setValue("long", event.target.value);
   };
 
-  const chartData: ChartData<"line", number[], string> | null = weatherData
-    ? reformData(weatherData).hourlyData
-    : null;
+  
 
   if (isLoadingTimezones) return <div>Loading...</div>;
   if (isError) toast.error("Error fetching timezones");
@@ -216,35 +213,7 @@ export default function Form({}: FormProps) {
         </button>
       </form>
 
-      {chartData && (
-        <Line
-          data={chartData}
-          options={{
-            scales: {
-              "y-axis-temp": {
-                type: "linear",
-                display: true,
-                position: "left",
-                title: {
-                  display: true,
-                  text: "Temperature (°C)",
-                },
-                beginAtZero: true,
-              },
-              "y-axis-humid": {
-                type: "linear",
-                display: true,
-                position: "right",
-                title: {
-                  display: true,
-                  text: "Humidity (%)",
-                },
-                beginAtZero: true,
-              },
-            },
-          }}
-        />
-      )}
+      
     </>
   );
 }

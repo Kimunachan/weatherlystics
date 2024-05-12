@@ -19,6 +19,45 @@ export const reformData = (data: WeatherDataType) => {
     (data) => data.apparentTemperature
   );
 
+  const temperatureChart = {
+    labels: hourLabels,
+    datasets: [
+      {
+        label: "Temperature",
+        data: temperatureData,
+        borderColor: "rgba(255, 99, 132, 1)",
+        tension: 0.1,
+        yAxisID: "y-axis-temp",
+      },
+    ],
+  }
+
+  const humidityChart = {
+    labels: hourLabels,
+    datasets: [
+      {
+        label: "Humidity",
+        data: humidityData,
+        borderColor: "rgba(54, 162, 235, 1)",
+        tension: 0.1,
+        yAxisID: "y-axis-humid",
+      },
+    ],
+  }
+
+  const apparentTemperatureChart = {
+    labels: hourLabels,
+    datasets: [
+      {
+        label: "Apparent Temperature",
+        data: apparentTemperatureData,
+        borderColor: "rgba(75, 192, 192, 1)",
+        tension: 0.1,
+        yAxisID: "y-axis-temp",
+      },
+    ],
+  }
+
   const hourlyData = {
     labels: hourLabels,
     datasets: [
@@ -57,7 +96,7 @@ export const reformData = (data: WeatherDataType) => {
   //     };
   // });
 
-  return { hourlyData };
+  return { hourlyData, temperatureChart, humidityChart, apparentTemperatureChart};
 };
 
 export const getHours = (time: Date, timezone: string) => {
