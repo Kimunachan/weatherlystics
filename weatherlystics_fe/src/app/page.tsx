@@ -1,7 +1,7 @@
 "use client";
 
 import { WeatherDataType } from "@/utils/types";
-import "chart.js/auto";
+
 import { useState } from "react";
 import styles from "../styles/pages/page.module.scss";
 import Form from "./Form";

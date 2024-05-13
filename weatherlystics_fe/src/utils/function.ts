@@ -58,32 +58,7 @@ export const reformData = (data: WeatherDataType) => {
     ],
   }
 
-  const hourlyData = {
-    labels: hourLabels,
-    datasets: [
-      {
-        label: "Temperature",
-        data: temperatureData,
-        borderColor: "rgba(255, 99, 132, 1)",
-        tension: 0.1,
-        yAxisID: "y-axis-temp",
-      },
-      {
-        label: "Humidity",
-        data: humidityData,
-        borderColor: "rgba(54, 162, 235, 1)",
-        tension: 0.1,
-        yAxisID: "y-axis-humid",
-      },
-      {
-        label: "Apparent Temperature",
-        data: apparentTemperatureData,
-        borderColor: "rgba(75, 192, 192, 1)",
-        tension: 0.1,
-        yAxisID: "y-axis-temp",
-      },
-    ],
-  };
+  
 
   // const dailyData = data.daily.map((data) => {
   //     return {
@@ -96,7 +71,7 @@ export const reformData = (data: WeatherDataType) => {
   //     };
   // });
 
-  return { hourlyData, temperatureChart, humidityChart, apparentTemperatureChart};
+  return {temperatureChart, humidityChart, apparentTemperatureChart};
 };
 
 export const getHours = (time: Date, timezone: string) => {

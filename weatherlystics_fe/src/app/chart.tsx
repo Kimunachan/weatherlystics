@@ -2,7 +2,7 @@
 
 import { reformData } from "@/utils/function";
 import { WeatherDataType } from "@/utils/types";
-import { ChartData } from "chart.js/auto";
+import "chart.js/auto";
 import { Line } from "react-chartjs-2";
 import styles from "../styles/charts/chart.module.scss";
 
@@ -12,24 +12,14 @@ type ChartProps = {
 
 export default function Chart({ weatherData}: ChartProps) {
 
-    const chartDataTemp: ChartData<"line", number[], string> | null = weatherData
-    ? reformData(weatherData).temperatureChart
-    : null;
-
-    const chartDataHumidity: ChartData<"line", number[], string> | null = weatherData
-    ? reformData(weatherData).humidityChart
-    : null;
-
-    const chartDataAppTemp: ChartData<"line", number[], string> | null = weatherData
-    ? reformData(weatherData).apparentTemperatureChart
-    : null;
+    const chartData = weatherData ? reformData(weatherData) : null;
 
     return (
         <div className={styles.chart_container}>
             <section className="chart_temp">
-                {chartDataTemp && (
+                {chartData && (
                     <Line
-                        data={chartDataTemp}
+                        data={chartData.temperatureChart}
                         options={{
                             scales: {
                                 "y-axis-temp": {
@@ -48,9 +38,9 @@ export default function Chart({ weatherData}: ChartProps) {
                 )}
             </section>
             <section className="chart_humidity">
-                {chartDataHumidity && (
+                {chartData && (
                     <Line
-                        data={chartDataHumidity}
+                        data={chartData.humidityChart}
                         options={{
                             scales: {
                                 "y-axis-humid": {
@@ -69,9 +59,9 @@ export default function Chart({ weatherData}: ChartProps) {
                 )}
             </section>
             <section className="chart_appTemp">
-                {chartDataAppTemp && (
+                {chartData && (
                     <Line
-                        data={chartDataAppTemp}
+                        data={chartData.apparentTemperatureChart}
                         options={{
                             scales: {
                                 "y-axis-appTemp": {
