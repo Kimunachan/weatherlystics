@@ -16,7 +16,7 @@ export default function Chart({ weatherData}: ChartProps) {
 
     return (
         <div className={styles.chart_container}>
-            <section className="chart_temp">
+            <section data-testid="chart-temp" className="chart_temp">
                 {chartData && (
                     <Line
                         data={chartData.temperatureChart}
@@ -37,7 +37,7 @@ export default function Chart({ weatherData}: ChartProps) {
                     />
                 )}
             </section>
-            <section className="chart_humidity">
+            <section data-testid="chart_humidity" className="chart_humidity">
                 {chartData && (
                     <Line
                         data={chartData.humidityChart}
@@ -58,7 +58,7 @@ export default function Chart({ weatherData}: ChartProps) {
                     />
                 )}
             </section>
-            <section className="chart_appTemp">
+            <section data-testid="chart_appTemp" className="chart_appTemp">
                 {chartData && (
                     <Line
                         data={chartData.apparentTemperatureChart}

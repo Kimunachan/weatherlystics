@@ -30,3 +30,17 @@ export const weatherDataSchema = z.object({
     })
   ),
 });
+
+export const schema = z.object({
+  lat: z
+    .number()
+    .min(-90, "Latitude needs to be at least -90")
+    .max(90, "Latitude cant be greater than 90"),
+  long: z
+    .number()
+    .min(-180, "Longitude needs to be at least -180")
+    .max(180, "Longitude cant be greater than 180"),
+  timezone: z.string(),
+  date: z.date(),
+  secondDate: z.date().optional(),
+});

@@ -19,7 +19,14 @@ describe('Chart', () => {
         daily: []
     };
 
-    const { container } = render(<Chart weatherData={mockData} />);
+    const { getByTestId } = render(<Chart weatherData={mockData} />);
+    expect(getByTestId('chart_temp')).toBeInTheDocument();
+    expect(getByTestId('chart_humidity')).toBeInTheDocument();
+    expect(getByTestId('chart_appTemp')).toBeInTheDocument();
+  });
+
+  it('renders without crashing when weatherData is undefined', () => {
+    const { container } = render(<Chart weatherData={undefined} />);
     expect(container.firstChild).toBeInTheDocument();
   });
 });
