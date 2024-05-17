@@ -29,7 +29,6 @@ const config: Config = {
     "/utils/customTestUtils.tsx",
     "/components/index.tsx",
     "/hooks/",
-    "/app/Form.tsx",
   ],
   coverageThreshold: {
     global: {

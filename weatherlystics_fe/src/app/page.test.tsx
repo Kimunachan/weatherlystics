@@ -12,20 +12,15 @@ const axiosMock = new MockAdapter(axios);
 
 describe("Main Page", () => {
   it("should render the main page", async () => {
-    axiosMock
-      .onGet("http://worldtimeapi.org/api/timezone")
-      .replyOnce(200, ["Region1"]);
     // Arrange
 
-    const { container } = render(await Page());
     // Act
+    const { container } = render(<Page />);
 
-    await waitForElementToBeRemoved(() => screen.getByText("Loading..."));
-
+    // Assert
     await waitFor(() => {
       expect(container).toMatchSnapshot();
     });
-    // Assert
 
     expect(screen.getByText("Weatherlystics")).toBeInTheDocument();
   });

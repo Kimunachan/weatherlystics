@@ -15,20 +15,16 @@ import styles from "../styles/pages/page.module.scss";
 import { WeatherDataType } from "@/utils/types";
 import { schema } from "@/utils/schemas";
 
-
 type FormProps = {
   setWeatherData: (data: WeatherDataType) => void;
-
 };
 
-
-
-export default function Form({setWeatherData}: FormProps) {
+export default function Form({ setWeatherData }: FormProps) {
   const dateValue = new Date();
 
   const [showSecondDate, setShowSecondDate] = useState(false);
   const toggleSecondDate = () => setShowSecondDate(!showSecondDate);
-  
+
   const getWeatherData = useMutation({
     mutationFn: async ({ lat, lon }: { lat: number; lon: number }) => {
       const response = await axios.get(
@@ -118,8 +114,6 @@ export default function Form({setWeatherData}: FormProps) {
     setValue("long", event.target.value);
   };
 
-  
-
   if (isLoadingTimezones) return <div>Loading...</div>;
   if (isError) toast.error("Error fetching timezones");
 
@@ -200,8 +194,6 @@ export default function Form({setWeatherData}: FormProps) {
           Submit
         </button>
       </form>
-
-      
     </>
   );
 }
