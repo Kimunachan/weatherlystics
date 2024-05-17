@@ -38,13 +38,16 @@
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "axios-mock-adapter": "^1.22.0",
+    "canvas": "^2.11.2",
     "eslint": "^8",
     "eslint-config-next": "14.2.1",
     "eslint-plugin-jest-dom": "^5.4.0",
     "eslint-plugin-testing-library": "^6.2.2",
     "jest": "^29.7.0",
+    "jest-canvas-mock": "^2.5.2",
     "jest-environment-jsdom": "^29.7.0",
     "next-router-mock": "^0.9.13",
+    "resize-observer-polyfill": "^1.5.1",
     "ts-node": "^10.9.2",
     "typescript": "^5"
   }

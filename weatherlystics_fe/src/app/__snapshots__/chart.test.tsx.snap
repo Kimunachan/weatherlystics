@@ -1,0 +1,40 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Chart renders without crashing 1`] = `
+<div>
+  <div
+    class="chart_container"
+  >
+    <section
+      class="chart_temp"
+      data-testid="chart_temp"
+    >
+      <canvas
+        height="150"
+        role="img"
+        width="300"
+      />
+    </section>
+    <section
+      class="chart_humidity"
+      data-testid="chart_humidity"
+    >
+      <canvas
+        height="150"
+        role="img"
+        width="300"
+      />
+    </section>
+    <section
+      class="chart_appTemp"
+      data-testid="chart_appTemp"
+    >
+      <canvas
+        height="150"
+        role="img"
+        width="300"
+      />
+    </section>
+  </div>
+</div>
+`;

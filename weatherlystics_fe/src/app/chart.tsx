@@ -12,11 +12,15 @@ type ChartProps = {
 
 export default function Chart({ weatherData}: ChartProps) {
 
-    const chartData = weatherData ? reformData(weatherData) : null;
+    if (!weatherData) {
+        return <div>Loading...</div>; // oder irgendeine andere Platzhalteranzeige
+    }
+
+    const chartData = reformData(weatherData);
 
     return (
         <div className={styles.chart_container}>
-            <section data-testid="chart-temp" className="chart_temp">
+            <section data-testid="chart_temp" className="chart_temp">
                 {chartData && (
                     <Line
                         data={chartData.temperatureChart}

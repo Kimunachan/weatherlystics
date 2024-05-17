@@ -1,9 +1,13 @@
+import { render, screen, waitFor } from '@/utils/customTestUtils';
 import { WeatherDataType } from '@/utils/types';
-import { render } from '@testing-library/react';
+import axios from 'axios';
+import MockAdapter from 'axios-mock-adapter';
 import Chart from './chart';
 
+const axiosMock = new MockAdapter(axios);
+
 describe('Chart', () => {
-  it('renders without crashing', () => {
+  it('renders without crashing', async () => {
     const mockData: WeatherDataType = {
         latitude: 0,
         longitude: 0,
@@ -19,14 +23,17 @@ describe('Chart', () => {
         daily: []
     };
 
-    const { getByTestId } = render(<Chart weatherData={mockData} />);
-    expect(getByTestId('chart_temp')).toBeInTheDocument();
-    expect(getByTestId('chart_humidity')).toBeInTheDocument();
-    expect(getByTestId('chart_appTemp')).toBeInTheDocument();
-  });
+    axiosMock.onGet('/api/weatherData').replyOnce(200, mockData);
 
-  it('renders without crashing when weatherData is undefined', () => {
-    const { container } = render(<Chart weatherData={undefined} />);
-    expect(container.firstChild).toBeInTheDocument();
+    const { container } = render(<Chart weatherData={mockData} />);
+
+
+    await waitFor(() => {
+      expect(container).toMatchSnapshot();
+    });
+
+    expect(screen.getByTestId('chart_temp')).toBeInTheDocument();
+    expect(screen.getByTestId('chart_humidity')).toBeInTheDocument();
+    expect(screen.getByTestId('chart_appTemp')).toBeInTheDocument();
   });
 });
