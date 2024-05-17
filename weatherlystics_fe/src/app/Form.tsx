@@ -107,11 +107,11 @@ export default function Form({ setWeatherData }: FormProps) {
     }
   };
   const handleLatChange = (event: any) => {
-    setValue("lat", event.target.value);
+    setValue("lat", event.target.value, { shouldValidate: true });
   };
 
   const handleLongChange = (event: any) => {
-    setValue("long", event.target.value);
+    setValue("long", event.target.value, { shouldValidate: true });
   };
 
   if (isLoadingTimezones) return <div>Loading...</div>;
@@ -121,7 +121,8 @@ export default function Form({ setWeatherData }: FormProps) {
     <>
       <form data-testid="form" className="form" onSubmit={onSubmit}>
         <div className="form-row">
-          <label>
+          <label data-testid="Latitude">
+
             Latitude:
             <input
               type="number"
@@ -129,9 +130,9 @@ export default function Form({ setWeatherData }: FormProps) {
               {...register("lat", { required: true, valueAsNumber: true })}
               onChange={handleLatChange}
             />
-            {errors.lat && <p>{errors.lat.message}</p>}
+            {errors.lat && <p role="alert">{errors.lat.message}</p>}
           </label>
-          <label>
+          <label data-testid="Longitude">
             Longitude:
             <input
               type="number"
@@ -139,11 +140,11 @@ export default function Form({ setWeatherData }: FormProps) {
               {...register("long", { required: true, valueAsNumber: true })}
               onChange={handleLongChange}
             />
-            {errors.long && <p>{errors.long.message}</p>}
+            {errors.long && <p role="alert">{errors.long.message}</p>}
           </label>
         </div>
         <div className="form-row">
-          <label>
+          <label data-testid="Timezone">
             Timezone:
             <Select
               isLoading={isLoadingTimezones}
@@ -152,7 +153,7 @@ export default function Form({ setWeatherData }: FormProps) {
               onChange={handleTimezoneChange}
               value={selectedTimezone}
             />
-            {errors.timezone && <p>{errors.timezone.message}</p>}
+            {errors.timezone && <p role="alert">{errors.timezone.message}</p>}
           </label>
           <button
             type="button"
@@ -173,7 +174,7 @@ export default function Form({ setWeatherData }: FormProps) {
                 valueAsDate: true,
               })}
             />
-            {errors.date && <p>{errors.date.message}</p>}
+            {errors.date && <p role="alert">{errors.date.message}</p>}
           </label>
           {showSecondDate && (
             <label>
@@ -183,11 +184,11 @@ export default function Form({ setWeatherData }: FormProps) {
                 defaultValue={dateValue.toISOString().split("T")[0]}
                 {...register("secondDate", { valueAsDate: true })}
               />
-              {errors.secondDate && <p>{errors.secondDate.message}</p>}
+              {errors.secondDate && <p role="alert">{errors.secondDate.message}</p>}
             </label>
           )}
           <button className={styles.circleButton} onClick={toggleSecondDate}>
-            {showSecondDate ? "-" : "add"}
+            {showSecondDate ? "add" : "add"}
           </button>
         </div>
         <button className={styles.longButton} type="submit">
