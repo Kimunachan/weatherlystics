@@ -31,33 +31,44 @@ describe("functions", () => {
       daily: [],
     };
     const expected = {
-      hourlyData: {
-        labels: ["11:20", "11:40"],
+      temperatureChart: {
         datasets: [
           {
-            label: "Temperature",
-            data: [20, 21],
             borderColor: "rgba(255, 99, 132, 1)",
-            tension: 0.1,
-            yAxisID: "y-axis-temp",
-          },
-          {
-            label: "Humidity",
-            data: [50, 51],
-            borderColor: "rgba(54, 162, 235, 1)",
-            tension: 0.1,
-            yAxisID: "y-axis-humid",
-          },
-          {
-            label: "Apparent Temperature",
-            data: [21, 22],
-            borderColor: "rgba(75, 192, 192, 1)",
+            data: [20, 21],
+            label: "Temperature",
             tension: 0.1,
             yAxisID: "y-axis-temp",
           },
         ],
+        labels: ["11:20", "11:40"],
+      },
+      humidityChart: {
+        datasets: [
+          {
+            borderColor: "rgba(54, 162, 235, 1)",
+            data: [50, 51],
+            label: "Humidity",
+            tension: 0.1,
+            yAxisID: "y-axis-humid",
+          },
+        ],
+        labels: ["11:20", "11:40"],
+      },
+      apparentTemperatureChart: {
+        datasets: [
+          {
+            borderColor: "rgba(75, 192, 192, 1)",
+            data: [21, 22],
+            label: "Apparent Temperature",
+            tension: 0.1,
+            yAxisID: "y-axis-temp",
+          },
+        ],
+        labels: ["11:20", "11:40"],
       },
     };
+    
     expect(reformData(data)).toEqual(expected);
   });
 });

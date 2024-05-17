@@ -12,8 +12,8 @@ import { z } from "zod";
 import "../styles/globals.scss";
 import styles from "../styles/pages/page.module.scss";
 
-import { WeatherDataType } from "@/utils/types";
 import { schema } from "@/utils/schemas";
+import { WeatherDataType } from "@/utils/types";
 
 type FormProps = {
   setWeatherData: (data: WeatherDataType) => void;
@@ -119,7 +119,7 @@ export default function Form({ setWeatherData }: FormProps) {
 
   return (
     <>
-      <form className="form" onSubmit={onSubmit}>
+      <form data-testid="form" className="form" onSubmit={onSubmit}>
         <div className="form-row">
           <label>
             Latitude:

@@ -1,4 +1,4 @@
 {
     "jest.jestCommandLine": "npm run test --",
-    "jest.rootPath": "D:\\Programmieren\\Schule\\Weatherlystics\\weatherlystics_fe"
+    "jest.rootPath": "E:/UNI/Weatherlysticers/weatherlystics/weatherlystics_fe"
 }
