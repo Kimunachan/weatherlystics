@@ -62,13 +62,13 @@ describe("functions", () => {
             data: [21, 22],
             label: "Apparent Temperature",
             tension: 0.1,
-            yAxisID: "y-axis-temp",
+            yAxisID: "y-axis-appTemp",
           },
         ],
         labels: ["11:20", "11:40"],
       },
     };
-    
+
     expect(reformData(data)).toEqual(expected);
   });
 });
