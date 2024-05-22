@@ -65,11 +65,15 @@ input[type="submit"] {
   border: 1px solid #fff;
   background-color: #121212;
   color: #fff;
+  &::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+  }
   padding: 0.5rem;
   width: 9.375rem; /* Feste Breite */
   height: 2.1875rem;
   box-sizing: border-box; /* Damit die Breite auch den Rand und das Padding einschließt */
 }
+
 .footer {
   position: fixed;
   left: 0;
