@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Form should render the form and interact correctly 1`] = `
+exports[`Form Component should render the form and interact correctly 1`] = `
 <form
   class="form"
   data-testid="form"
@@ -41,7 +41,7 @@ exports[`Form should render the form and interact correctly 1`] = `
       >
         <span
           class="css-1f43avz-a11yText-A11yText"
-          id="react-select-2-live-region"
+          id="react-select-7-live-region"
         />
         <span
           aria-atomic="false"
@@ -74,7 +74,7 @@ exports[`Form should render the form and interact correctly 1`] = `
                 autocomplete="off"
                 autocorrect="off"
                 class=""
-                id="react-select-2-input"
+                id="react-select-7-input"
                 role="combobox"
                 spellcheck="false"
                 style="opacity: 0; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
@@ -126,7 +126,7 @@ exports[`Form should render the form and interact correctly 1`] = `
       <input
         name="date"
         type="date"
-        value="2024-05-17"
+        value="2024-05-22"
       />
     </label>
     <button

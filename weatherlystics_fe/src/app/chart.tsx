@@ -13,7 +13,7 @@ type ChartProps = {
 export default function Chart({ weatherData}: ChartProps) {
 
     if (!weatherData) {
-        return <div>Loading...</div>; // oder irgendeine andere Platzhalteranzeige
+        return <div>Loading...</div>; 
     }
 
     const chartData = reformData(weatherData);
