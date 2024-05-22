@@ -91,11 +91,13 @@ export default function Form({ setWeatherData }: FormProps) {
       const response = await axios.get<string[]>(
         "http://worldtimeapi.org/api/timezone"
       );
+      console.log({ response });
       return response.data.map((timezone) => ({
         value: timezone,
         label: timezone,
       }));
     },
+    retry: false,
   });
 
   const handleTimezoneChange = (
@@ -114,15 +116,14 @@ export default function Form({ setWeatherData }: FormProps) {
     setValue("long", event.target.value, { shouldValidate: true });
   };
 
-  if (isLoadingTimezones) return <div>Loading...</div>;
   if (isError) toast.error("Error fetching timezones");
+  if (isLoadingTimezones) return <div>Loading...</div>;
 
   return (
     <>
       <form data-testid="form" className="form" onSubmit={onSubmit}>
         <div className="form-row">
           <label data-testid="Latitude">
-
             Latitude:
             <input
               type="number"
@@ -184,7 +185,9 @@ export default function Form({ setWeatherData }: FormProps) {
                 defaultValue={dateValue.toISOString().split("T")[0]}
                 {...register("secondDate", { valueAsDate: true })}
               />
-              {errors.secondDate && <p role="alert">{errors.secondDate.message}</p>}
+              {errors.secondDate && (
+                <p role="alert">{errors.secondDate.message}</p>
+              )}
             </label>
           )}
           <button className={styles.circleButton} onClick={toggleSecondDate}>
