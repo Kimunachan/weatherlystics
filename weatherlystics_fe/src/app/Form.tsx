@@ -91,7 +91,6 @@ export default function Form({ setWeatherData }: FormProps) {
       const response = await axios.get<string[]>(
         "http://worldtimeapi.org/api/timezone"
       );
-      console.log({ response });
       return response.data.map((timezone) => ({
         value: timezone,
         label: timezone,

@@ -17,7 +17,6 @@ export const useGetWeather = () => {
     },
     onSuccess: (data) => {
       toast.success(`Weather data fetched successfully`);
-      console.log(data);
     },
   });
   return getWeatherData;
