@@ -125,20 +125,24 @@ export class WeatherService {
       });
     }
 
-    await this.cacheManager.set(`weather-${lat}-${lon}`, {
-      latitude,
-      longitude,
-      timezone,
-      timezoneAbbreviation,
-      current: {
-        time: weatherData.current.time,
-        temperature2m: weatherData.current.temperature2m,
-        relativeHumidity2m: weatherData.current.relativeHumidity2m,
-        apparentTemperature: weatherData.current.apparentTemperature,
+    await this.cacheManager.set(
+      `weather-${lat}-${lon}`,
+      {
+        latitude,
+        longitude,
+        timezone,
+        timezoneAbbreviation,
+        current: {
+          time: weatherData.current.time,
+          temperature2m: weatherData.current.temperature2m,
+          relativeHumidity2m: weatherData.current.relativeHumidity2m,
+          apparentTemperature: weatherData.current.apparentTemperature,
+        },
+        hourly: hourlyMatched,
+        daily: dailyMatched,
       },
-      hourly: hourlyMatched,
-      daily: dailyMatched,
-    });
+      10 * 60 * 1000,
+    );
 
     return {
       latitude,

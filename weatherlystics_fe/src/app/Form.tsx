@@ -1,38 +1,46 @@
 "use client";
-import { customStyles } from "@/utils/constants";
+import { BASE_URL, customStyles } from "@/utils/constants";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import Select from "react-select";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { z } from "zod";
 import "../styles/globals.scss";
 import styles from "../styles/pages/page.module.scss";
 
-type FormProps = {};
+import { schema } from "@/utils/schemas";
+import { WeatherDataType } from "@/utils/types";
 
-const schema = z.object({
-  lat: z
-    .number()
-    .min(-90, "Latitude needs to be at least -90")
-    .max(90, "Latitude cant be greater than 90"),
-  long: z
-    .number()
-    .min(-180, "Longitude needs to be at least -180")
-    .max(180, "Longitude cant be greater than 180"),
-  timezone: z.string(),
-  date: z.date(),
-  secondDate: z.date().optional(),
-});
+type FormProps = {
+  setWeatherData: (data: WeatherDataType) => void;
+};
 
-export default function Form({}: FormProps) {
+export default function Form({ setWeatherData }: FormProps) {
   const dateValue = new Date();
 
   const [showSecondDate, setShowSecondDate] = useState(false);
   const toggleSecondDate = () => setShowSecondDate(!showSecondDate);
+
+  const getWeatherData = useMutation({
+    mutationFn: async ({ lat, lon }: { lat: number; lon: number }) => {
+      const response = await axios.get(
+        `${BASE_URL}/weather?lat=${lat}&lon=${lon}`
+      );
+      return response.data;
+    },
+    mutationKey: ["weatherData"],
+    onError: (error) => {
+      toast.error(`Error fetching weather data: ${error}`);
+    },
+    onSuccess: (data) => {
+      toast.success(`Weather data fetched successfully`);
+      setWeatherData(data);
+    },
+  });
 
   const [selectedTimezone, setSelectedTimezone] = useState<{
     value: string;
@@ -55,7 +63,10 @@ export default function Form({}: FormProps) {
   });
 
   const onSubmit = handleSubmit((data) => {
-    console.log(data);
+    getWeatherData.mutate({
+      lat: data.lat,
+      lon: data.long,
+    });
   });
 
   const useMyLocation = async () => {
@@ -85,6 +96,7 @@ export default function Form({}: FormProps) {
         label: timezone,
       }));
     },
+    retry: false,
   });
 
   const handleTimezoneChange = (
@@ -96,20 +108,21 @@ export default function Form({}: FormProps) {
     }
   };
   const handleLatChange = (event: any) => {
-    setValue("lat", event.target.value);
+    setValue("lat", event.target.value, { shouldValidate: true });
   };
 
   const handleLongChange = (event: any) => {
-    setValue("long", event.target.value);
+    setValue("long", event.target.value, { shouldValidate: true });
   };
-  if (isLoadingTimezones) return <div>Loading...</div>;
+
   if (isError) toast.error("Error fetching timezones");
+  if (isLoadingTimezones) return <div>Loading...</div>;
 
   return (
     <>
-      <form className="form" onSubmit={onSubmit}>
+      <form data-testid="form" className="form" onSubmit={onSubmit}>
         <div className="form-row">
-          <label>
+          <label data-testid="Latitude">
             Latitude:
             <input
               type="number"
@@ -117,9 +130,9 @@ export default function Form({}: FormProps) {
               {...register("lat", { required: true, valueAsNumber: true })}
               onChange={handleLatChange}
             />
-            {errors.lat && <p>{errors.lat.message}</p>}
+            {errors.lat && <p role="alert">{errors.lat.message}</p>}
           </label>
-          <label>
+          <label data-testid="Longitude">
             Longitude:
             <input
               type="number"
@@ -127,11 +140,11 @@ export default function Form({}: FormProps) {
               {...register("long", { required: true, valueAsNumber: true })}
               onChange={handleLongChange}
             />
-            {errors.long && <p>{errors.long.message}</p>}
+            {errors.long && <p role="alert">{errors.long.message}</p>}
           </label>
         </div>
         <div className="form-row">
-          <label>
+          <label data-testid="Timezone">
             Timezone:
             <Select
               isLoading={isLoadingTimezones}
@@ -140,7 +153,7 @@ export default function Form({}: FormProps) {
               onChange={handleTimezoneChange}
               value={selectedTimezone}
             />
-            {errors.timezone && <p>{errors.timezone.message}</p>}
+            {errors.timezone && <p role="alert">{errors.timezone.message}</p>}
           </label>
           <button
             type="button"
@@ -161,7 +174,7 @@ export default function Form({}: FormProps) {
                 valueAsDate: true,
               })}
             />
-            {errors.date && <p>{errors.date.message}</p>}
+            {errors.date && <p role="alert">{errors.date.message}</p>}
           </label>
           {showSecondDate && (
             <label>
@@ -171,18 +184,19 @@ export default function Form({}: FormProps) {
                 defaultValue={dateValue.toISOString().split("T")[0]}
                 {...register("secondDate", { valueAsDate: true })}
               />
-              {errors.secondDate && <p>{errors.secondDate.message}</p>}
+              {errors.secondDate && (
+                <p role="alert">{errors.secondDate.message}</p>
+              )}
             </label>
           )}
           <button className={styles.circleButton} onClick={toggleSecondDate}>
-            {showSecondDate ? "-" : "add"}
+            {showSecondDate ? "add" : "add"}
           </button>
         </div>
         <button className={styles.longButton} type="submit">
           Submit
         </button>
       </form>
-      <ToastContainer />
     </>
   );
 }

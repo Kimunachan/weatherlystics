@@ -6,6 +6,8 @@ import {
 } from "@testing-library/react";
 import React from "react";
 
+// const queryClient = new QueryClient();
+
 const render = (ui: JSX.Element, { ...renderOptions } = {}): RenderResult => {
   const wrapper = ({ children }: { children?: React.ReactNode }) => {
     return <ReactQueryProvider>{children}</ReactQueryProvider>;

@@ -28,6 +28,9 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     logger: WinstonModule.createLogger({ instance: winstance }),
   });
+  app.enableCors({
+    origin: ['http://localhost:3000'],
+  });
   app.setGlobalPrefix('api/v1/');
   app.useGlobalPipes(new ValidationPipe());
   await app.listen(3001, () => {
