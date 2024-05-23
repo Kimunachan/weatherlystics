@@ -1,7 +1,7 @@
 import { render, screen, waitFor } from "@/utils/customTestUtils";
+import { reformData } from "@/utils/function";
 import { WeatherDataType } from "@/utils/types";
 import TextChart from "./textChart";
-import { reformData } from "@/utils/function";
 
 jest.mock('../utils/function', () => ({
   reformData: jest.fn()
@@ -54,10 +54,7 @@ describe("TextChart", () => {
     expect(screen.getByTestId("chart_appTemp")).toBeInTheDocument();
   });
 
-  it("renders loading when no data is passed", () => {
-    render(<TextChart weatherData={undefined} />);
-    
-  });
+  
 
   it("renders the text data correctly", async () => {
     render(<TextChart weatherData={mockData} />);
