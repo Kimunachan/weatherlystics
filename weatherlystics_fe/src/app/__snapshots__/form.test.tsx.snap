@@ -126,7 +126,7 @@ exports[`Form Component should render the form and interact correctly 1`] = `
       <input
         name="date"
         type="date"
-        value="2024-05-22"
+        value="2024-05-23"
       />
     </label>
     <button
