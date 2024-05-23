@@ -181,7 +181,9 @@ describe("Form Component", () => {
       expect(screen.getByTestId("form")).toBeInTheDocument();
       expect(screen.getByLabelText("Latitude:")).toHaveValue(52.52);
       expect(screen.getByLabelText("Longitude:")).toHaveValue(13.405);
-      expect(screen.getByLabelText("Date:"))
+      expect(screen.getByLabelText("Date:")).toHaveValue(
+        new Date().toISOString().slice(0, 10)
+      );
     });
 
     expect(mockSetWeatherData).toHaveBeenCalled();

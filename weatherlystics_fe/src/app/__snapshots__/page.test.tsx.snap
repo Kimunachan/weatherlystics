@@ -66,11 +66,7 @@ exports[`Main Page should render the main page 1`] = `
       >
         <div
           class="card"
-        >
-          <div>
-            Loading...
-          </div>
-        </div>
+        />
       </section>
     </main>
     <footer

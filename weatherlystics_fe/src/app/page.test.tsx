@@ -4,11 +4,9 @@ import {
   screen,
   waitFor
 } from "@/utils/customTestUtils";
-import axios from "axios";
-import MockAdapter from "axios-mock-adapter";
 import Page from "./page";
 
-const axiosMock = new MockAdapter(axios);
+
 
 describe("Main Page", () => {
   it("should render the main page", async () => {

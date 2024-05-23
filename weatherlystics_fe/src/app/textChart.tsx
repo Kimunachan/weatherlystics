@@ -8,15 +8,22 @@ type TextChartProps = {
     weatherData: WeatherDataType | undefined;
 };
 
+type ChartData = {
+    labels: string[];
+    datasets: {
+        data: number[];
+    }[];
+};
+
 export default function textChart({ weatherData }: TextChartProps) {
 
     if (!weatherData) {
-        return <div>Loading...</div>;
+        return;
     }
 
     const chartData = reformData(weatherData);
 
-    const renderTextData = (data: any, label: string, unit: string) => {
+    const renderTextData = (data: ChartData, label: string, unit: string) => {
         if (!data) return <div>{label} data is not available</div>;
         const labels = data.labels;
         const datasets = data.datasets[0].data;
