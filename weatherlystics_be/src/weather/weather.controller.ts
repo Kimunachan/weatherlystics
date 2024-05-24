@@ -15,7 +15,12 @@ export class WeatherController {
   ) {}
 
   @Get('/')
-  async getWeather(@Query('lat') lat: number, @Query('lon') lon: number) {
-    return await this.weatherService.getWeather(lon, lat);
+  async getWeather(
+    @Query('lat') lat: number,
+    @Query('lon') lon: number,
+    @Query('date') date: string,
+    @Query('timezone') timezone: string,
+  ) {
+    return await this.weatherService.getWeather(lon, lat, date, timezone);
   }
 }

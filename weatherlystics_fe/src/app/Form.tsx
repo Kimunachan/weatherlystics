@@ -26,9 +26,19 @@ export default function Form({ setWeatherData }: FormProps) {
   const toggleSecondDate = () => setShowSecondDate(!showSecondDate);
 
   const getWeatherData = useMutation({
-    mutationFn: async ({ lat, lon }: { lat: number; lon: number }) => {
+    mutationFn: async ({
+      lat,
+      lon,
+      date,
+      timezone,
+    }: {
+      lat: number;
+      lon: number;
+      date: string;
+      timezone: string;
+    }) => {
       const response = await axios.get(
-        `${BASE_URL}/weather?lat=${lat}&lon=${lon}`
+        `${BASE_URL}/weather?lat=${lat}&lon=${lon}&date=${date}&timezone=${timezone}`
       );
       return response.data;
     },
@@ -66,6 +76,8 @@ export default function Form({ setWeatherData }: FormProps) {
     getWeatherData.mutate({
       lat: data.lat,
       lon: data.long,
+      date: data.date.toISOString().split("T")[0],
+      timezone: data.timezone,
     });
   });
 

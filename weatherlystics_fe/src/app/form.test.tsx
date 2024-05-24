@@ -182,7 +182,7 @@ describe("Form Component", () => {
       expect(screen.getByLabelText("Latitude:")).toHaveValue(52.52);
       expect(screen.getByLabelText("Longitude:")).toHaveValue(13.405);
       expect(screen.getByLabelText("Date:")).toHaveValue(
-        new Date("2024-05-22T00:00:00Z").toISOString().slice(0, 10)
+        new Date().toISOString().slice(0, 10)
       );
     });
 
