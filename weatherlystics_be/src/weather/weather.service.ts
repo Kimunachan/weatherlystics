@@ -34,9 +34,9 @@ export class WeatherService {
     if (!dateRegex.test(date))
       throw new BadRequestException('Invalid date format');
     const diff = moment(date).diff(moment(), 'days');
-    if (Math.abs(diff) > 7)
-      url = 'https://archive-api.open-meteo.com/v1/archive';
-
+    if (diff < -7) url = 'https://archive-api.open-meteo.com/v1/archive';
+    if (diff > 7)
+      throw new BadRequestException('Date should be within 7 days from today');
     this.logger.log(
       `Fetching weather data for Lat: ${lat}, Lon: ${lon}, Date: ${date} and Timezone: ${timezone_req}`,
     );
