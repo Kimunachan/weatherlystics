@@ -44,3 +44,14 @@ export const schema = z.object({
   date: z.date(),
   secondDate: z.date().optional(),
 });
+export const rowSchema = z.object({
+  lat: z.number(),
+  long: z.number(),
+  timezone: z.string(),
+  date: z.string(), // using string for the date input value
+});
+
+// Define the form schema
+export const formSchema = z.object({
+  rows: z.array(rowSchema),
+});
