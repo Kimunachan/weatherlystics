@@ -7,7 +7,7 @@ import { Line } from "react-chartjs-2";
 import styles from "../styles/charts/chart.module.scss";
 
 type ChartProps = {
-    weatherData: WeatherDataType | undefined;
+    weatherData: WeatherDataType | undefined | WeatherDataType[];
 };
 
 export default function Chart({ weatherData}: ChartProps) {
@@ -16,10 +16,19 @@ export default function Chart({ weatherData}: ChartProps) {
         return ;
     }
 
-    const chartData = reformData(weatherData);
+    let chartData: any;
+    if(Array.isArray(weatherData)) {
+        chartData = weatherData.map((data) => reformData(data));
+        console.log(chartData);
+    }
+    else {
+        chartData = reformData(weatherData);
+        console.log(chartData);
+    }
 
     return (
         <div className={styles.chart_container}>
+
             <section data-testid="chart_temp" className="chart_temp">
                 {chartData && (
                     <Line

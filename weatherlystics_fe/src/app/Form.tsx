@@ -65,7 +65,9 @@ export default function Form({ setWeatherData }: FormProps) {
       const response = await axios.post(`${BASE_URL}/weather/compare`, {
         requestData: data,
       });
+      console.log(response.data);
       return response.data;
+      
     },
     mutationKey: ["compareWeatherData"],
     onError: (error) => {
@@ -213,7 +215,7 @@ export default function Form({ setWeatherData }: FormProps) {
                   options={timezones}
                   styles={customStyles}
                   onChange={(selectedOption) => handleTimezoneChange(selectedOption, index)}
-                  value={selectedTimezone}
+                  value={timezones?.find(option => option.value === field.value) || null}
                 />
               )}
             />
