@@ -54,6 +54,13 @@ describe("TextChart", () => {
     expect(screen.getByTestId("chart_appTemp")).toBeInTheDocument();
   });
 
+  it("returns null when weatherData is undefined", async () => {
+    const { container } = render(<TextChart weatherData={undefined} />);
+
+    await waitFor(() => {
+      expect(container).toBeEmptyDOMElement();
+    });
+  });
   
 
   it("renders the text data correctly", async () => {
