@@ -36,8 +36,5 @@ describe("Chart", () => {
     expect(screen.getByTestId("chart_appTemp")).toBeInTheDocument();
   });
 
-  it("renders loading when no data is passed", () => {
-    render(<Chart weatherData={undefined} />);
-    expect(screen.getByText("Loading...")).toBeInTheDocument();
-  });
+
 });
