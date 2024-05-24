@@ -7,6 +7,7 @@ import {
   LoggerService,
 } from '@nestjs/common';
 import { Cache } from 'cache-manager';
+import * as moment from 'moment';
 
 import { fetchWeatherApi } from 'openmeteo';
 import { range } from 'src/utils/functions';
@@ -18,12 +19,27 @@ export class WeatherService {
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
   ) {}
 
-  async getWeather(lon: number, lat: number) {
+  async getWeather(
+    lon: number,
+    lat: number,
+    date: string,
+    timezone_req: string,
+  ) {
     if (!lat || !lon)
       throw new BadRequestException('Latitude and Longitude are required');
-
-    this.logger.log(`Fetching weather data for Lat: ${lat}, Lon: ${lon}`);
-    const cacheData = await this.cacheManager.get(`weather-${lat}-${lon}`);
+    if (!date) throw new BadRequestException('Date is required');
+    const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+    if (!dateRegex.test(date))
+      throw new BadRequestException('Invalid date format');
+    const diff = moment(date).diff(moment(), 'days');
+    if (Math.abs(diff) > 7)
+      throw new BadRequestException('Date should be within 7 days from today');
+    this.logger.log(
+      `Fetching weather data for Lat: ${lat}, Lon: ${lon}, Date: ${date} and Timezone: ${timezone_req}`,
+    );
+    const cacheData = await this.cacheManager.get(
+      `weather-${lat}-${lon}-${date}-${timezone_req}`,
+    );
 
     if (cacheData) {
       this.logger.log('Data found in cache');
@@ -36,7 +52,7 @@ export class WeatherService {
       latitude: lat,
       longitude: lon,
       timeformat: 'unixtime',
-      timezone: 'Europe/Berlin',
+      timezone: timezone_req,
       current: [
         'temperature_2m',
         'relative_humidity_2m',
@@ -54,7 +70,8 @@ export class WeatherService {
         'apparent_temperature_max',
         'apparent_temperature_min',
       ],
-      forecast_days: 1,
+      start_date: date,
+      end_date: date,
     };
 
     const url = 'https://api.open-meteo.com/v1/forecast';
@@ -126,7 +143,7 @@ export class WeatherService {
     }
 
     await this.cacheManager.set(
-      `weather-${lat}-${lon}`,
+      `weather-${lat}-${lon}-${date}-${timezone_req}`,
       {
         latitude,
         longitude,
