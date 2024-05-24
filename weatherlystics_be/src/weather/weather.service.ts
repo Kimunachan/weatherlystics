@@ -11,6 +11,7 @@ import * as moment from 'moment';
 
 import { fetchWeatherApi } from 'openmeteo';
 import { range } from 'src/utils/functions';
+import { CompareWeatherDTO } from './weather.dto';
 
 @Injectable()
 export class WeatherService {
@@ -29,11 +30,13 @@ export class WeatherService {
       throw new BadRequestException('Latitude and Longitude are required');
     if (!date) throw new BadRequestException('Date is required');
     const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+    let url = 'https://api.open-meteo.com/v1/forecast';
     if (!dateRegex.test(date))
       throw new BadRequestException('Invalid date format');
     const diff = moment(date).diff(moment(), 'days');
     if (Math.abs(diff) > 7)
-      throw new BadRequestException('Date should be within 7 days from today');
+      url = 'https://archive-api.open-meteo.com/v1/archive';
+
     this.logger.log(
       `Fetching weather data for Lat: ${lat}, Lon: ${lon}, Date: ${date} and Timezone: ${timezone_req}`,
     );
@@ -73,8 +76,6 @@ export class WeatherService {
       start_date: date,
       end_date: date,
     };
-
-    const url = 'https://api.open-meteo.com/v1/forecast';
     const responses = await fetchWeatherApi(url, queryParams);
 
     const response = responses[0];
@@ -175,5 +176,21 @@ export class WeatherService {
       hourly: hourlyMatched,
       daily: dailyMatched,
     };
+  }
+
+  async compareWeather(dto: CompareWeatherDTO) {
+    const responses: any[] = [];
+
+    for (const data of dto.requestData) {
+      const response = await this.getWeather(
+        data.lon,
+        data.lat,
+        data.date,
+        data.timezone,
+      );
+      responses.push(response);
+    }
+
+    return responses;
   }
 }
