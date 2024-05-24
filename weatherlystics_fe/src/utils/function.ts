@@ -23,7 +23,7 @@ export const reformData = (data: WeatherDataType) => {
     labels: hourLabels,
     datasets: [
       {
-        label: "Temperature",
+        label: "Temperature" +" "+ data.latitude +" Latitude " + data.longitude +" Longitude " + getDay(data.current.time, timeZones),
         data: temperatureData,
         borderColor: "rgba(255, 99, 132, 1)",
         tension: 0.1,
@@ -36,7 +36,7 @@ export const reformData = (data: WeatherDataType) => {
     labels: hourLabels,
     datasets: [
       {
-        label: "Humidity",
+        label: "Humidity"+" "+ data.latitude +" Latitude " + data.longitude +" Longitude " + getDay(data.current.time, timeZones),
         data: humidityData,
         borderColor: "rgba(54, 162, 235, 1)",
         tension: 0.1,
@@ -49,7 +49,7 @@ export const reformData = (data: WeatherDataType) => {
     labels: hourLabels,
     datasets: [
       {
-        label: "Apparent Temperature",
+        label: "Apparent Temperature"+" "+ data.latitude +" Latitude " + data.longitude +" Longitude " + getDay(data.current.time, timeZones),
         data: apparentTemperatureData,
         borderColor: "rgba(75, 192, 192, 1)",
         tension: 0.1,
@@ -80,3 +80,12 @@ export const getHours = (time: Date, timezone: string) => {
     timeZone: timezone,
   });
 };
+export const getDay = (time: Date, timezone: string) => {
+  const date = new Date(time.toString());
+  return date.toLocaleDateString("de-DE", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    timeZone: timezone,
+  });
+}
