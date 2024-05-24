@@ -7,92 +7,82 @@ import { Line } from "react-chartjs-2";
 import styles from "../styles/charts/chart.module.scss";
 
 type ChartProps = {
-    weatherData: WeatherDataType | undefined | WeatherDataType[];
+  weatherData: WeatherDataType | undefined | WeatherDataType[];
 };
 
-export default function Chart({ weatherData}: ChartProps) {
+export default function Chart({ weatherData }: ChartProps) {
+  if (!weatherData) {
+    return;
+  }
 
-    if (!weatherData) {
-        return ;
-    }
+  const chartData = reformData(weatherData);
+  console.log(chartData);
 
-    let chartData: any;
-    if(Array.isArray(weatherData)) {
-        chartData = weatherData.map((data) => reformData(data));
-        console.log(chartData);
-    }
-    else {
-        chartData = reformData(weatherData);
-        console.log(chartData);
-    }
-
-    return (
-        <div className={styles.chart_container}>
-
-            <section data-testid="chart_temp" className="chart_temp">
-                {chartData && (
-                    <Line
-                        data={chartData.temperatureChart}
-                        options={{
-                            scales: {
-                                "y-axis-temp": {
-                                    type: "linear",
-                                    display: true,
-                                    position: "left",
-                                    title: {
-                                        display: true,
-                                        text: "Temperature (°C)",
-                                    },
-                                    beginAtZero: true,
-                                },
-                            },
-                        }}
-                    />
-                )}
-            </section>
-            <section data-testid="chart_humidity" className="chart_humidity">
-                {chartData && (
-                    <Line
-                        data={chartData.humidityChart}
-                        options={{
-                            scales: {
-                                "y-axis-humid": {
-                                    type: "linear",
-                                    display: true,
-                                    position: "left",
-                                    title: {
-                                        display: true,
-                                        text: "Humidity (%)",
-                                    },
-                                    beginAtZero: true,
-                                },
-                            },
-                        }}
-                    />
-                )}
-            </section>
-            <section data-testid="chart_appTemp" className="chart_appTemp">
-                {chartData && (
-                    <Line
-                        data={chartData.apparentTemperatureChart}
-                        options={{
-                            scales: {
-                                "y-axis-appTemp": {
-                                    type: "linear",
-                                    display: true,
-                                    position: "left",
-                                    title: {
-                                        display: true,
-                                        text: "Apparent Temperature (°C)",
-                                    },
-                                    beginAtZero: true,
-                                },
-                            },
-                        }}
-                    />
-                )}
-            </section>
-        </div>
-    );
-};
-
+  return (
+    <div className={styles.chart_container}>
+      <section data-testid="chart_temp" className="chart_temp">
+        {chartData && (
+          <Line
+            data={chartData.temperatureChart}
+            options={{
+              scales: {
+                "y-axis-temp": {
+                  type: "linear",
+                  display: true,
+                  position: "left",
+                  title: {
+                    display: true,
+                    text: "Temperature (°C)",
+                  },
+                  beginAtZero: true,
+                },
+              },
+            }}
+          />
+        )}
+      </section>
+      <section data-testid="chart_humidity" className="chart_humidity">
+        {chartData && (
+          <Line
+            data={chartData.humidityChart}
+            options={{
+              scales: {
+                "y-axis-humid": {
+                  type: "linear",
+                  display: true,
+                  position: "left",
+                  title: {
+                    display: true,
+                    text: "Humidity (%)",
+                  },
+                  beginAtZero: true,
+                },
+              },
+            }}
+          />
+        )}
+      </section>
+      <section data-testid="chart_appTemp" className="chart_appTemp">
+        {chartData && (
+          <Line
+            data={chartData.apparentTemperatureChart}
+            options={{
+              scales: {
+                "y-axis-appTemp": {
+                  type: "linear",
+                  display: true,
+                  position: "left",
+                  title: {
+                    display: true,
+                    text: "Apparent Temperature (°C)",
+                  },
+                  beginAtZero: true,
+                },
+              },
+            }}
+          />
+        )}
+      </section>
+    </div>
+  );
+}
