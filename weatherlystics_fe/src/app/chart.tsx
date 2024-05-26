@@ -1,14 +1,27 @@
 "use client";
 
+import { createAnnotations, getMinMaxPerDataset } from "@/utils/annotations";
 import { reformData } from "@/utils/function";
 import { WeatherDataType } from "@/utils/types";
+import { Chart as ChartJS } from 'chart.js';
 import "chart.js/auto";
+import annotationPlugin from "chartjs-plugin-annotation";
 import { Line } from "react-chartjs-2";
 import styles from "../styles/charts/chart.module.scss";
+
+
+ChartJS.register(annotationPlugin);
 
 type ChartProps = {
   weatherData: WeatherDataType | undefined | WeatherDataType[];
 };
+type MinMax = {
+  min: number;
+  max: number;
+  xMin: number | string;
+  xMax: number | string;
+};
+
 
 export default function Chart({ weatherData }: ChartProps) {
   if (!weatherData) {
@@ -17,6 +30,15 @@ export default function Chart({ weatherData }: ChartProps) {
 
   const chartData = reformData(weatherData);
   console.log(chartData);
+
+  
+
+  const tempMinMax: MinMax[] = getMinMaxPerDataset(chartData.temperatureChart.datasets);
+  const humidMinMax: MinMax[] = getMinMaxPerDataset(chartData.humidityChart.datasets);
+  const appTempMinMax: MinMax[] = getMinMaxPerDataset(chartData.apparentTemperatureChart.datasets);
+
+  
+
 
   return (
     <div className={styles.chart_container}>
@@ -35,6 +57,11 @@ export default function Chart({ weatherData }: ChartProps) {
                     text: "Temperature (°C)",
                   },
                   beginAtZero: true,
+                },
+              },
+              plugins: {
+                annotation: {
+                  annotations: createAnnotations(tempMinMax),
                 },
               },
             }}
@@ -58,6 +85,11 @@ export default function Chart({ weatherData }: ChartProps) {
                   beginAtZero: true,
                 },
               },
+              plugins: {
+                annotation: {
+                  annotations: createAnnotations(humidMinMax),
+                },
+              },
             }}
           />
         )}
@@ -77,6 +109,11 @@ export default function Chart({ weatherData }: ChartProps) {
                     text: "Apparent Temperature (°C)",
                   },
                   beginAtZero: true,
+                },
+              },
+              plugins: {
+                annotation: {
+                  annotations: createAnnotations(appTempMinMax),
                 },
               },
             }}

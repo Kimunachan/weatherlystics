@@ -12,16 +12,25 @@
   @media (max-width: 600px) {
     .chart_container section {
       width: 100%;
+      
     }
+    .text_container section {
+      width: 100%;
+    }
+
   }
   .text_container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
+    margin: 2rem;
     color-scheme: #fff;
     color: #fff;
   }
   .text_container section {
-    width: 48%; /* etwas weniger als 50%, um Platz für den Rand zu lassen */
+    width: 80%; /* etwas weniger als 50%, um Platz für den Rand zu lassen */
     box-sizing: border-box;
+
+  }
+  .formRow {
+    display: flex;
+    gap: 1rem;
+    flex-direction: row;
   }

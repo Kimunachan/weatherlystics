@@ -104,15 +104,6 @@ export default function Form({ setWeatherData }: FormProps) {
 
   const onSubmit = handleSubmit((data) => {
     if (data.rows.length === 0) return;
-    if(data.rows.length === 1) {
-      getWeatherData.mutate({
-        lat: data.rows[0].lat,
-        lon: data.rows[0].long,
-        date: data.rows[0].date,
-        timezone: data.rows[0].timezone,
-      });
-      return;
-    }
     getCompareWeatherData.mutate(
       data.rows.map((row) => ({
         lat: row.lat,
@@ -167,6 +158,10 @@ export default function Form({ setWeatherData }: FormProps) {
       setValue(`rows.${index}.timezone`, selectedOption.value);
     }
   };
+  const minDate = "1940-01-01";
+  const maxDate = new Date();
+  maxDate.setDate(maxDate.getDate() + 14);
+  const maxDateString = maxDate.toISOString().split("T")[0];
 
   const addRow = (index: number) => {
     const lastRow = fields[index];
@@ -184,7 +179,7 @@ export default function Form({ setWeatherData }: FormProps) {
   return (
     <form data-testid="form" className="form" onSubmit={onSubmit}>
       {fields.map((field, index) => (
-        <div key={field.id} className="form-row">
+        <div key={field.id} className="form-row" data-testid="row">
           <label data-testid="Latitude">
             Latitude:
             <input
@@ -225,6 +220,8 @@ export default function Form({ setWeatherData }: FormProps) {
             Date:
             <input
               type="date"
+              min={minDate}
+              max={maxDateString}
               defaultValue={dateValue.toISOString().split("T")[0]}
               {...register(`rows.${index}.date`, {
                 required: true,

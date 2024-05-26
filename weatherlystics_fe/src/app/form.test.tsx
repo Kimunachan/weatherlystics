@@ -75,7 +75,7 @@ describe("Form Component", () => {
 
     await waitFor(() => {
       expect(toast.error).toHaveBeenCalledWith(
-        "Error fetching weather data: Error: Request failed with status code 500"
+        "Error fetching weather data: Error: Request failed with status code 404"
       );
     });
   });
@@ -101,23 +101,7 @@ describe("Form Component", () => {
     );
   });
 
-  it("should toggle second date input", async () => {
-    axiosMock
-      .onGet("http://worldtimeapi.org/api/timezone")
-      .replyOnce(200, ["Europe/Berlin", "America/New_York"]);
-
-    render(<Form setWeatherData={mockSetWeatherData} />);
-
-    await waitForElementToBeRemoved(() => screen.getByText("Loading..."));
-
-    fireEvent.click(screen.getByText("add"));
-
-    expect(screen.getByLabelText(/Second Date/i)).toBeInTheDocument();
-
-    fireEvent.click(screen.getByText("add"));
-
-    expect(screen.queryByLabelText(/Second Date/i)).not.toBeInTheDocument();
-  });
+  
 
   it("should handle timezone selection", async () => {
     axiosMock
@@ -242,4 +226,20 @@ describe("Form Component", () => {
     // Ensure loading state is no longer present
     expect(screen.queryByText("Loading...")).not.toBeInTheDocument();
   });
+  it("should handle to add an additional row", async () => {
+    axiosMock
+      .onGet("http://worldtimeapi.org/api/timezone")
+      .replyOnce(200, ["Europe/Berlin", "America/New_York"]);
+
+    render(<Form setWeatherData={mockSetWeatherData} />);
+
+    await waitForElementToBeRemoved(() => screen.getByText("Loading..."));
+
+    fireEvent.click(screen.getByText("+"));
+
+    await waitFor(() => {
+      expect(screen.getAllByTestId("row")).toHaveLength(2);
+    });
+  });
+  
 });

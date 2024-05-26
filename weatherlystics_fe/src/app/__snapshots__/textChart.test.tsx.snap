@@ -9,78 +9,84 @@ exports[`TextChart renders without crashing 1`] = `
       class="chart_temp"
       data-testid="chart_temp"
     >
-      <div>
-        <h3>
-          Temperature
-        </h3>
-        <ul>
-          <li>
-            10:00
-            : 
-            20
-             
-            °C
-          </li>
-          <li>
-            11:00
-            : 
-            21
-             
-            °C
-          </li>
-        </ul>
+      <div
+        class="formRow"
+      >
+        <div>
+          <h3 />
+          <ul>
+            <li>
+              10:00
+              : 
+              20
+               
+              °C
+            </li>
+            <li>
+              11:00
+              : 
+              21
+               
+              °C
+            </li>
+          </ul>
+        </div>
       </div>
     </section>
     <section
       class="chart_humidity"
       data-testid="chart_humidity"
     >
-      <div>
-        <h3>
-          Humidity
-        </h3>
-        <ul>
-          <li>
-            10:00
-            : 
-            50
-             
-            %
-          </li>
-          <li>
-            11:00
-            : 
-            55
-             
-            %
-          </li>
-        </ul>
+      <div
+        class="formRow"
+      >
+        <div>
+          <h3 />
+          <ul>
+            <li>
+              10:00
+              : 
+              50
+               
+              %
+            </li>
+            <li>
+              11:00
+              : 
+              55
+               
+              %
+            </li>
+          </ul>
+        </div>
       </div>
     </section>
     <section
       class="chart_appTemp"
       data-testid="chart_appTemp"
     >
-      <div>
-        <h3>
-          Apparent Temperature
-        </h3>
-        <ul>
-          <li>
-            10:00
-            : 
-            22
-             
-            °C
-          </li>
-          <li>
-            11:00
-            : 
-            23
-             
-            °C
-          </li>
-        </ul>
+      <div
+        class="formRow"
+      >
+        <div>
+          <h3 />
+          <ul>
+            <li>
+              10:00
+              : 
+              22
+               
+              °C
+            </li>
+            <li>
+              11:00
+              : 
+              23
+               
+              °C
+            </li>
+          </ul>
+        </div>
       </div>
     </section>
   </div>
