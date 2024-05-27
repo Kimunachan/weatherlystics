@@ -71,4 +71,79 @@ describe("functions", () => {
 
     expect(reformData(data)).toEqual(expected);
   });
+  it("should return the data correctly reformed for array input", () => {
+    const data: WeatherDataType[] = [
+      {
+        current: {
+          apparentTemperature: 21,
+          relativeHumidity2m: 50,
+          temperature2m: 20,
+          time: new Date("2021-08-25T10:20:00.000Z"),
+        },
+        daily: [],
+        hourly: [
+          {
+            apparentTemperature: 21,
+            relativeHumidity2m: 50,
+            temperature2m: 20,
+            time: new Date("2021-08-25T10:20:00.000Z"),
+          },
+          {
+            apparentTemperature: 22,
+            relativeHumidity2m: 51,
+            temperature2m: 21,
+            time: new Date("2021-08-25T10:40:00.000Z"),
+          },
+        ],
+        latitude: 51.5074,
+        longitude: 0.1278,
+        timezone: "Europe/London",
+        timezoneAbbreviation: "BST",
+      },
+      // Sie können hier weitere Elemente hinzufügen
+    ];
+
+    const result = reformData(data);
+
+    const expected = {
+      temperatureChart: {
+        labels: ["10:20", "10:40"],
+        datasets: [
+          {
+            label: "Temperature Latitude 51.51 Longitude 0.13 25.08.2021",
+            data: [20, 21],
+            borderColor: "rgba(200, 133, 66, 1)",
+            tension: 0.1,
+          },
+          // Weitere Datasets für weitere Elemente in data
+        ],
+      },
+      humidityChart: {
+        labels: ["10:20", "10:40"],
+        datasets: [
+          {
+            label: "Humidity Latitude 51.51 Longitude 0.13 25.08.2021",
+            data: [50, 51],
+            borderColor: "rgba(200, 133, 66, 1)",
+            tension: 0.1,
+          },
+          // Weitere Datasets für weitere Elemente in data
+        ],
+      },
+      apparentTemperatureChart: {
+        labels: ["10:20", "10:40"],
+        datasets: [
+          {
+            label: "Apparent Temperature Latitude 51.51 Longitude 0.13 25.08.2021",
+            data: [21, 22],
+            borderColor: "rgba(200, 133, 66, 1)",
+            tension: 0.1,
+          },
+          // Weitere Datasets für weitere Elemente in data
+        ],
+      },
+    };
+
+    expect(result).toEqual(expected);
+  });
 });
