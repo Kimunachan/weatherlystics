@@ -67,9 +67,9 @@ describe("TextChart", () => {
     render(<TextChart weatherData={mockData} />);
 
     await waitFor(() => {
-      expect(screen.getByText("Temperature")).toBeInTheDocument();
-      expect(screen.getByText("Humidity")).toBeInTheDocument();
-      expect(screen.getByText("Apparent Temperature")).toBeInTheDocument();
+      expect(screen.getByTestId("chart_temp")).toBeInTheDocument();
+      expect(screen.getByTestId("chart_humidity")).toBeInTheDocument();
+      expect(screen.getByTestId("chart_appTemp")).toBeInTheDocument();
     });
 
     expect(screen.getByText("10:00: 20 °C")).toBeInTheDocument();
@@ -92,9 +92,7 @@ describe("TextChart", () => {
     render(<TextChart weatherData={mockData} />);
 
     await waitFor(() => {
-      expect(screen.getByText("Temperature data is not available")).toBeInTheDocument();
-      expect(screen.getByText("Humidity data is not available")).toBeInTheDocument();
-      expect(screen.getByText("Apparent Temperature data is not available")).toBeInTheDocument();
+      expect(screen.getAllByText("Data is not available")).toBeInTheDocument();
     });
   });
 });

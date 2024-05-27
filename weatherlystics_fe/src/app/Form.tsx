@@ -26,33 +26,6 @@ type RowType = z.infer<typeof rowSchema>;
 export default function Form({ setWeatherData }: FormProps) {
   const [dateValue] = useState(new Date());
 
-  const getWeatherData = useMutation({
-    mutationFn: async ({
-      lat,
-      lon,
-      date,
-      timezone,
-    }: {
-      lat: number;
-      lon: number;
-      date: string;
-      timezone: string;
-    }) => {
-      const response = await axios.get(
-        `${BASE_URL}/weather?lat=${lat}&lon=${lon}&date=${date}&timezone=${timezone}`
-      );
-      return response.data;
-    },
-    mutationKey: ["weatherData"],
-    onError: (error) => {
-      toast.error(`Error fetching weather data: ${error}`);
-    },
-    onSuccess: (data) => {
-      toast.success(`Weather data fetched successfully`);
-      setWeatherData(data);
-    },
-  });
-
   const getCompareWeatherData = useMutation({
     mutationFn: async (
       data: {
@@ -103,7 +76,6 @@ export default function Form({ setWeatherData }: FormProps) {
   });
 
   const onSubmit = handleSubmit((data) => {
-    if (data.rows.length === 0) return;
     getCompareWeatherData.mutate(
       data.rows.map((row) => ({
         lat: row.lat,
@@ -160,7 +132,7 @@ export default function Form({ setWeatherData }: FormProps) {
   };
   const minDate = "1940-01-01";
   const maxDate = new Date();
-  maxDate.setDate(maxDate.getDate() + 14);
+  maxDate.setDate(maxDate.getDate() + 8);
   const maxDateString = maxDate.toISOString().split("T")[0];
 
   const addRow = (index: number) => {
@@ -194,7 +166,11 @@ export default function Form({ setWeatherData }: FormProps) {
             <input
               type="number"
               step={0.0000001}
-              {...register(`rows.${index}.long`, { required: true, valueAsNumber: true })}
+              {...register(`rows.${index}.long`, {
+                 required: true, 
+                 valueAsNumber: true, 
+                 validate: value => value !== 0 || 'Longitude cannot be 0'
+                })}
             />
             {errors.rows?.[index]?.long && <p role="alert">{errors.rows[index]?.long?.message}</p>}
           </label>
@@ -203,13 +179,17 @@ export default function Form({ setWeatherData }: FormProps) {
             <Controller
               control={control}
               name={`rows.${index}.timezone`}
+              rules={{ required: true }}
               render={({ field }) => (
                 <Select
                   {...field}
                   isLoading={isLoadingTimezones}
                   options={timezones}
                   styles={customStyles}
-                  onChange={(selectedOption) => handleTimezoneChange(selectedOption, index)}
+                  onChange={(selectedOption) => {
+                    field.onChange(selectedOption?.value); // notify React Hook Form about the change
+                    handleTimezoneChange(selectedOption, index);
+                  }}
                   value={timezones?.find(option => option.value === field.value) || null}
                 />
               )}

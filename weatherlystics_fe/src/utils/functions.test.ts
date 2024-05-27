@@ -36,7 +36,7 @@ describe("functions", () => {
           {
             borderColor: "rgba(255, 99, 132, 1)",
             data: [20, 21],
-            label: "Temperature",
+            label: "Temperature 51.5074 Latitude 0.1278 Longitude 25.08.2021",
             tension: 0.1,
             yAxisID: "y-axis-temp",
           },
@@ -48,7 +48,7 @@ describe("functions", () => {
           {
             borderColor: "rgba(54, 162, 235, 1)",
             data: [50, 51],
-            label: "Humidity",
+            label: "Humidity 51.5074 Latitude 0.1278 Longitude 25.08.2021",
             tension: 0.1,
             yAxisID: "y-axis-humid",
           },
@@ -60,7 +60,7 @@ describe("functions", () => {
           {
             borderColor: "rgba(75, 192, 192, 1)",
             data: [21, 22],
-            label: "Apparent Temperature",
+            label: "Apparent Temperature 51.5074 Latitude 0.1278 Longitude 25.08.2021",
             tension: 0.1,
             yAxisID: "y-axis-appTemp",
           },

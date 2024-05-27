@@ -49,6 +49,4 @@ describe("Chart", () => {
     const minMax = getMinMaxPerDataset(datasets);
     expect(minMax).toEqual([{ min: 1, max: 3, xMin: 1, xMax: 3 }]);
   });
-
-
 });
