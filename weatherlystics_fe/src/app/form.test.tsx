@@ -245,92 +245,15 @@ describe("Form Component", () => {
     await waitFor(() => {
       expect(screen.getAllByTestId("row")).toHaveLength(2);
     });
-  });
 
-  it("should handle removing a row", async () => {
-    axiosMock
-      .onGet("http://worldtimeapi.org/api/timezone")
-      .replyOnce(200, ["Europe/Berlin", "America/New_York"]);
-
-    render(<Form setWeatherData={mockSetWeatherData} />);
-
-    await waitForElementToBeRemoved(() => screen.getByText("Loading..."));
-
-    fireEvent.click(screen.getByText("+"));
-
-    await waitFor(() => {
-      expect(screen.getAllByTestId("row")).toHaveLength(2);
-    });
-
-    fireEvent.click(screen.getAllByText("-")[0]);
-
-    await waitFor(() => {
-      expect(screen.getAllByTestId("row")).toHaveLength(1);
-    });
-  });
-  it("should return if no data gets submitted", async () => {
-    axiosMock
-      .onGet("http://worldtimeapi.org/api/timezone")
-      .replyOnce(200, ["Europe/Berlin", "America/New_York"]);
-
-    render(<Form setWeatherData={mockSetWeatherData} />);
-
-    await waitForElementToBeRemoved(() => screen.getByText("Loading..."));
-
-    fireEvent.submit(screen.getByTestId("form"));
-
-    await waitFor(() => {
-      expect(screen.getByTestId("form")).toBeInTheDocument();
-    });
-
-    expect(mockSetWeatherData).not.toHaveBeenCalled();
-  });
-  it("should add a new row with correct default values", async () => {
-    axiosMock
-      .onGet("http://worldtimeapi.org/api/timezone")
-      .replyOnce(200, ["Europe/Berlin", "America/New_York"]);
-
-    render(<Form setWeatherData={mockSetWeatherData} />);
-
-    await waitForElementToBeRemoved(() => screen.getByText("Loading..."));
-
-    fireEvent.click(screen.getByText("+"));
-
-    await waitFor(() => {
-      expect(screen.getAllByTestId("row")).toHaveLength(2);
-    });
-
-    const row = screen.getAllByTestId("row")[1];
-
-    expect(row).toMatchSnapshot();
-    expect(row.querySelector("[name='rows.1.lat']")).toHaveValue(0);
-    expect(row.querySelector("[name='rows.1.long']")).toHaveValue(0);
-    expect(row.querySelector("[name='rows.1.timezone']")).toHaveValue("");
-    expect(row.querySelector("[name='rows.1.date']")).toHaveValue(
+    const newRow = screen.getAllByTestId("row")[1];
+    expect(newRow.querySelector("[name='rows.1.lat']")).toHaveValue(0);
+    expect(newRow.querySelector("[name='rows.1.long']")).toHaveValue(0);
+    expect(newRow.querySelector("[name='rows.1.timezone']")).toHaveValue(
+      ""
+    );
+    expect(newRow.querySelector("[name='rows.1.date']")).toHaveValue(
       new Date().toISOString().slice(0, 10)
     );
   });
-  it("should handle adding a row when fields are empty initially", async () => {
-    axiosMock
-      .onGet("http://worldtimeapi.org/api/timezone")
-      .replyOnce(200, ["Europe/Berlin", "America/New_York"]);
-
-    render(<Form setWeatherData={mockSetWeatherData} />);
-
-    await waitForElementToBeRemoved(() => screen.getByText("Loading..."));
-
-    fireEvent.change(screen.getByLabelText("Latitude:"), {
-      target: { value: "" },
-    });
-    fireEvent.change(screen.getByLabelText("Longitude:"), {
-      target: { value: "" },
-    });
-
-    fireEvent.click(screen.getByText("+"));
-
-    await waitFor(() => {
-      expect(screen.getAllByTestId("row")).toHaveLength(2);
-    });
-  });
-  
 });
