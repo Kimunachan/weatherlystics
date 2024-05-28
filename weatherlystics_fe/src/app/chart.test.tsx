@@ -49,4 +49,13 @@ describe("Chart", () => {
     const minMax = getMinMaxPerDataset(datasets);
     expect(minMax).toEqual([{ min: 1, max: 3, xMin: 1, xMax: 3 }]);
   });
+  it("calculates min and max correctly when data is an array of numbers", () => {
+    const datasets = [
+      {
+        data: [1, 2, 3],
+      },
+    ];
+    const minMax = getMinMaxPerDataset(datasets as any);
+    expect(minMax).toEqual([{ min: 1, max: 3, xMin: 0, xMax: 2 }]);
+  });
 });
