@@ -122,7 +122,7 @@ describe("functions", () => {
 
     const expected = {
       temperatureChart: {
-        labels: ["10:20", "10:40", ...Array.from({ length: 10 }, (_, i) => getHours(new Date(1629888000 * 1000 + (i + 1) * 3600 * 1000), "Europe/London"))],
+        labels: ["11:20", "11:40", ...Array.from({ length: 10 }, (_, i) => getHours(new Date(1629888000 * 1000 + (i + 1) * 3600 * 1000), "Europe/London"))],
         datasets: [
           {
             label: "Temperature Latitude 51.51 Longitude 0.13 25.08.2021",
@@ -134,7 +134,7 @@ describe("functions", () => {
         ],
       },
       humidityChart: {
-        labels: ["10:20", "10:40", ...Array.from({ length: 10 }, (_, i) => getHours(new Date(1629888000 * 1000 + (i + 1) * 3600 * 1000), "Europe/London"))],
+        labels: ["11:20", "11:40", ...Array.from({ length: 10 }, (_, i) => getHours(new Date(1629888000 * 1000 + (i + 1) * 3600 * 1000), "Europe/London"))],
         datasets: [
           {
             label: "Humidity Latitude 51.51 Longitude 0.13 25.08.2021",
@@ -146,7 +146,7 @@ describe("functions", () => {
         ],
       },
       apparentTemperatureChart: {
-        labels: ["10:20", "10:40", ...Array.from({ length: 10 }, (_, i) => getHours(new Date(1629888000 * 1000 + (i + 1) * 3600 * 1000), "Europe/London"))],
+        labels: ["11:20", "11:40", ...Array.from({ length: 10 }, (_, i) => getHours(new Date(1629888000 * 1000 + (i + 1) * 3600 * 1000), "Europe/London"))],
         datasets: [
           {
             label: "Apparent Temperature Latitude 51.51 Longitude 0.13 25.08.2021",

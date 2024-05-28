@@ -88,11 +88,14 @@ describe("TextChart", () => {
     };
     
     (reformData as jest.Mock).mockImplementation(() => mockEmptyData);
-
+  
     render(<TextChart weatherData={mockData} />);
-
+  
     await waitFor(() => {
-      expect(screen.getAllByText("Data is not available")).toBeInTheDocument();
+      const elements = screen.getAllByText("Data is not available");
+      elements.forEach((element) => {
+        expect(element).toBeInTheDocument();
+      });
     });
   });
 });
