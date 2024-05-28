@@ -58,4 +58,11 @@ describe("Chart", () => {
     const minMax = getMinMaxPerDataset(datasets as any);
     expect(minMax).toEqual([{ min: 1, max: 3, xMin: 0, xMax: 2 }]);
   });
+  it("returns null when weatherData is undefined", async () => {
+    const { container } = render(<Chart weatherData={undefined} />);
+
+    await waitFor(() => {
+      expect(container).toBeEmptyDOMElement();
+    });
+  });
 });
