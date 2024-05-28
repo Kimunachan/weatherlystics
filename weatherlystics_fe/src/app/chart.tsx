@@ -29,7 +29,6 @@ export default function Chart({ weatherData }: ChartProps) {
   }
 
   const chartData = reformData(weatherData);
-  console.log(chartData);
 
   
 

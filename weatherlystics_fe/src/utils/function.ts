@@ -15,9 +15,7 @@ export const reformData = (data_inc: WeatherDataType | WeatherDataType[]) => {
       })
     );
 
-    for (const data of data_inc) {
-      console.log(data.current.time);
-    }
+    
 
     const hourLabels = hourly[0].map((data) => data.time);
     const temperatureData = hourly.map((data) =>

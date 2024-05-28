@@ -5,7 +5,7 @@ import { WeatherDataType } from "@/utils/types";
 import styles from "../styles/charts/chart.module.scss";
 
 type TextChartProps = {
-    weatherData: WeatherDataType | undefined | WeatherDataType[];
+    weatherData:WeatherDataType[] | WeatherDataType | undefined;
 };
 
 type ChartData = {

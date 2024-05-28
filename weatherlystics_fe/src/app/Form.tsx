@@ -38,7 +38,6 @@ export default function Form({ setWeatherData }: FormProps) {
       const response = await axios.post(`${BASE_URL}/weather/compare`, {
         requestData: data,
       });
-      console.log(response.data);
       return response.data;
       
     },
@@ -49,7 +48,6 @@ export default function Form({ setWeatherData }: FormProps) {
     onSuccess: (data) => {
       toast.success(`Weather data fetched successfully`);
       setWeatherData(data);
-      console.log(data);
     },
   });
 
@@ -131,9 +129,7 @@ export default function Form({ setWeatherData }: FormProps) {
     }
   };
   const minDate = "1940-01-01";
-  const maxDate = new Date();
-  maxDate.setDate(maxDate.getDate() + 8);
-  const maxDateString = maxDate.toISOString().split("T")[0];
+  const maxDate = new Date(Date.now() + 691200000)
 
   const addRow = (index: number) => {
     const lastRow = fields[index];
@@ -201,10 +197,11 @@ export default function Form({ setWeatherData }: FormProps) {
             <input
               type="date"
               min={minDate}
-              max={maxDateString}
+              max={maxDate.toISOString().split("T")[0]}
               defaultValue={dateValue.toISOString().split("T")[0]}
               {...register(`rows.${index}.date`, {
                 required: true,
+                valueAsDate: true,
               })}
             />
             {errors.rows?.[index]?.date && <p role="alert">{errors.rows[index]?.date?.message}</p>}
@@ -212,15 +209,16 @@ export default function Form({ setWeatherData }: FormProps) {
           <button className={styles.normalButton} type="button" onClick={() => useMyLocation(index)}>
             Use my location
           </button>
+          <button className={styles.circleButton} type="button" onClick={() => addRow(index)}>
+            +
+          </button>
           {fields.length > 1 && (
             <button className={styles.circleButton} type="button" onClick={() => remove(index)}>
               -
             </button>
           )}
           
-          <button className={styles.circleButton} type="button" onClick={() => addRow(index)}>
-            +
-          </button>
+          
         </div>
       ))}
       <button className={styles.longButton} type="submit">
