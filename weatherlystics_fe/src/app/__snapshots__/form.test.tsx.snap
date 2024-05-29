@@ -116,11 +116,11 @@ exports[`Form Component should render the form and interact correctly 1`] = `
     <label>
       Date:
       <input
-        max="2024-06-05"
+        max="2024-06-06"
         min="1940-01-01"
         name="rows.0.date"
         type="date"
-        value="2024-05-28"
+        value="2024-05-29"
       />
     </label>
     <button

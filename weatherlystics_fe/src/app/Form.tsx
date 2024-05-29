@@ -16,7 +16,6 @@ import { WeatherDataType } from "@/utils/types";
 
 // Define the schema for each row in the form
 
-
 type FormProps = {
   setWeatherData: (data: WeatherDataType) => void;
 };
@@ -39,7 +38,6 @@ export default function Form({ setWeatherData }: FormProps) {
         requestData: data,
       });
       return response.data;
-      
     },
     mutationKey: ["compareWeatherData"],
     onError: (error) => {
@@ -63,7 +61,12 @@ export default function Form({ setWeatherData }: FormProps) {
     reValidateMode: "onBlur",
     defaultValues: {
       rows: [
-        { lat: 0, long: 0, timezone: "", date: dateValue.toISOString().split("T")[0] },
+        {
+          lat: 0,
+          long: 0,
+          timezone: "",
+          date: dateValue.toISOString().split("T")[0],
+        },
       ],
     },
   });
@@ -129,7 +132,7 @@ export default function Form({ setWeatherData }: FormProps) {
     }
   };
   const minDate = "1940-01-01";
-  const maxDate = new Date(Date.now() + 691200000)
+  const maxDate = new Date(Date.now() + 691200000);
 
   const addRow = (index: number) => {
     const lastRow = fields[index];
@@ -153,9 +156,14 @@ export default function Form({ setWeatherData }: FormProps) {
             <input
               type="number"
               step={0.0000001}
-              {...register(`rows.${index}.lat`, { required: true, valueAsNumber: true })}
+              {...register(`rows.${index}.lat`, {
+                required: true,
+                valueAsNumber: true,
+              })}
             />
-            {errors.rows?.[index]?.lat && <p role="alert">{errors.rows[index]?.lat?.message}</p>}
+            {errors.rows?.[index]?.lat && (
+              <p role="alert">{errors.rows[index]?.lat?.message}</p>
+            )}
           </label>
           <label data-testid="Longitude">
             Longitude:
@@ -163,12 +171,13 @@ export default function Form({ setWeatherData }: FormProps) {
               type="number"
               step={0.0000001}
               {...register(`rows.${index}.long`, {
-                 required: true, 
-                 valueAsNumber: true, 
-                 validate: value => value !== 0 || 'Longitude cannot be 0'
-                })}
+                required: true,
+                valueAsNumber: true,
+              })}
             />
-            {errors.rows?.[index]?.long && <p role="alert">{errors.rows[index]?.long?.message}</p>}
+            {errors.rows?.[index]?.long && (
+              <p role="alert">{errors.rows[index]?.long?.message}</p>
+            )}
           </label>
           <label data-testid="Timezone">
             Timezone:
@@ -186,11 +195,16 @@ export default function Form({ setWeatherData }: FormProps) {
                     field.onChange(selectedOption?.value); // notify React Hook Form about the change
                     handleTimezoneChange(selectedOption, index);
                   }}
-                  value={timezones?.find(option => option.value === field.value) || null}
+                  value={
+                    timezones?.find((option) => option.value === field.value) ||
+                    null
+                  }
                 />
               )}
             />
-            {errors.rows?.[index]?.timezone && <p role="alert">{errors.rows[index]?.timezone?.message}</p>}
+            {errors.rows?.[index]?.timezone && (
+              <p role="alert">{errors.rows[index]?.timezone?.message}</p>
+            )}
           </label>
           <label>
             Date:
@@ -204,21 +218,33 @@ export default function Form({ setWeatherData }: FormProps) {
                 valueAsDate: true,
               })}
             />
-            {errors.rows?.[index]?.date && <p role="alert">{errors.rows[index]?.date?.message}</p>}
+            {errors.rows?.[index]?.date && (
+              <p role="alert">{errors.rows[index]?.date?.message}</p>
+            )}
           </label>
-          <button className={styles.normalButton} type="button" onClick={() => useMyLocation(index)}>
+          <button
+            className={styles.normalButton}
+            type="button"
+            onClick={() => useMyLocation(index)}
+          >
             Use my location
           </button>
-          <button className={styles.circleButton} type="button" onClick={() => addRow(index)}>
+          <button
+            className={styles.circleButton}
+            type="button"
+            onClick={() => addRow(index)}
+          >
             +
           </button>
           {fields.length > 1 && (
-            <button className={styles.circleButton} type="button" onClick={() => remove(index)}>
+            <button
+              className={styles.circleButton}
+              type="button"
+              onClick={() => remove(index)}
+            >
               -
             </button>
           )}
-          
-          
         </div>
       ))}
       <button className={styles.longButton} type="submit">
