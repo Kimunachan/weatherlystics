@@ -131,6 +131,7 @@ exports[`Form Component should render the form and interact correctly 1`] = `
     </button>
     <button
       class="circleButton"
+      data-testid="add-0"
       type="button"
     >
       +
