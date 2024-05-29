@@ -141,10 +141,10 @@ export default function Form({ setWeatherData }: FormProps) {
   const addRow = (index: number) => {
     const lastRow = fields[index];
     append({
-      lat: lastRow?.lat ?? 0,
-      long: lastRow?.long ?? 0,
-      timezone: lastRow?.timezone ?? "",
-      date: lastRow?.date ?? dateValue.toISOString().split("T")[0],
+      lat: lastRow?.lat,
+      long: lastRow?.long,
+      timezone: lastRow?.timezone,
+      date: lastRow?.date
     });
   };
 
@@ -219,7 +219,6 @@ export default function Form({ setWeatherData }: FormProps) {
               defaultValue={dateValue.toISOString().split("T")[0]}
               {...register(`rows.${index}.date`, {
                 required: true,
-                valueAsDate: true,
               })}
             />
             {errors.rows?.[index]?.date && (
