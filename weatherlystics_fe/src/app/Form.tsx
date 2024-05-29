@@ -133,6 +133,10 @@ export default function Form({ setWeatherData }: FormProps) {
   };
   const minDate = "1940-01-01";
   const maxDate = new Date(Date.now() + 691200000);
+  
+  //add an name to the button remove and add with the index to be able to remove the correct row
+
+
 
   const addRow = (index: number) => {
     const lastRow = fields[index];
@@ -231,6 +235,7 @@ export default function Form({ setWeatherData }: FormProps) {
           </button>
           <button
             className={styles.circleButton}
+            data-testid={"add-"+index.toString()}
             type="button"
             onClick={() => addRow(index)}
           >
@@ -239,6 +244,7 @@ export default function Form({ setWeatherData }: FormProps) {
           {fields.length > 1 && (
             <button
               className={styles.circleButton}
+              data-testid={"remove-"+index.toString()}
               type="button"
               onClick={() => remove(index)}
             >

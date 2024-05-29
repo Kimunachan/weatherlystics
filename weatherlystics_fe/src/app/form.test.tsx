@@ -256,4 +256,26 @@ describe("Form Component", () => {
       new Date().toISOString().slice(0, 10)
     );
   });
+  it("should handle removing a row", async () => {
+    axiosMock
+      .onGet("http://worldtimeapi.org/api/timezone")
+      .replyOnce(200, ["Europe/Berlin", "America/New_York"]);
+
+    render(<Form setWeatherData={mockSetWeatherData} />);
+
+    await waitForElementToBeRemoved(() => screen.getByText("Loading..."));
+
+    fireEvent.click(screen.getByText("+"));
+
+    await waitFor(() => {
+      expect(screen.getAllByTestId("row")).toHaveLength(2);
+    });
+
+    fireEvent.click(screen.getByTestId("remove-1"));
+
+    await waitFor(() => {
+      expect(screen.getAllByTestId("row")).toHaveLength(1);
+    });
+  });
+  
 });
