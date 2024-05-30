@@ -1,4 +1,4 @@
-For configuration copy the .env.example file to .env and update the values as needed and copy the .dockerenv.example file to .dockerenv and update the values as needed.
+For configuration copy the .env.example file to .env and update the values as needed.
 
 To run the application localy in development mode, execute the following command:
 
@@ -7,8 +7,6 @@ To run the application localy in development mode, execute the following command
 ```bash
 (On first run or after changes) npm install
 
-npm run start:db
-
 npm run start:dev
 ```
 
@@ -16,8 +14,6 @@ npm run start:dev
 
 ```bash
 (On first run or after changes) yarn install
-
-yarn start:db
 
 yarn start:dev
 ```

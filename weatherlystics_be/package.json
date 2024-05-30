@@ -2,7 +2,7 @@
   "name": "weatherlystics_be",
   "version": "0.0.1",
   "description": "",
-  "author": "",
+  "author": "Jonas Kliefoth <kliefoth.jonas@gmail.com>",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
