@@ -4,7 +4,7 @@ import {
   screen,
   waitFor,
   waitForElementToBeRemoved,
-} from "@/utils/customTestUtils"; // Ensure this wraps components with QueryClientProvider
+} from "@/utils/customTestUtils";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
 import { toast } from "react-toastify";

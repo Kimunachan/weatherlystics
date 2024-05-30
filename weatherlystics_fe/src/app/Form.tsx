@@ -1,3 +1,5 @@
+"use client"
+
 import { BASE_URL, customStyles } from "@/utils/constants";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -14,7 +16,6 @@ import styles from "../styles/pages/page.module.scss";
 import { formSchema, rowSchema } from "@/utils/schemas";
 import { WeatherDataType } from "@/utils/types";
 
-// Define the schema for each row in the form
 
 type FormProps = {
   setWeatherData: (data: WeatherDataType) => void;
@@ -134,9 +135,6 @@ export default function Form({ setWeatherData }: FormProps) {
   const minDate = "1940-01-01";
   const maxDate = new Date(Date.now() + 691200000);
   
-  //add an name to the button remove and add with the index to be able to remove the correct row
-
-
 
   const addRow = (index: number) => {
     const lastRow = fields[index];
@@ -196,7 +194,7 @@ export default function Form({ setWeatherData }: FormProps) {
                   options={timezones}
                   styles={customStyles}
                   onChange={(selectedOption) => {
-                    field.onChange(selectedOption?.value); // notify React Hook Form about the change
+                    field.onChange(selectedOption?.value); 
                     handleTimezoneChange(selectedOption, index);
                   }}
                   value={
