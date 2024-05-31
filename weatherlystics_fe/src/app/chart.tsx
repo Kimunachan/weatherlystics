@@ -60,7 +60,7 @@ export default function Chart({ weatherData }: ChartProps) {
               },
               plugins: {
                 annotation: {
-                  annotations: createAnnotations(tempMinMax),
+                  annotations: createAnnotations(tempMinMax, chartData.temperatureChart.datasets.map((_, index) => index)),
                 },
               },
             }}
@@ -86,7 +86,8 @@ export default function Chart({ weatherData }: ChartProps) {
               },
               plugins: {
                 annotation: {
-                  annotations: createAnnotations(humidMinMax),
+                  annotations: createAnnotations(humidMinMax, chartData.humidityChart.datasets.map((_, index) => index)),
+                  
                 },
               },
             }}
@@ -112,7 +113,7 @@ export default function Chart({ weatherData }: ChartProps) {
               },
               plugins: {
                 annotation: {
-                  annotations: createAnnotations(appTempMinMax),
+                  annotations: createAnnotations(appTempMinMax, chartData.apparentTemperatureChart.datasets.map((_, index) => index)),
                 },
               },
             }}

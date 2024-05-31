@@ -25,31 +25,35 @@ import { ChartDataset, PluginOptionsByType } from 'chart.js';
         });
     };
 
-    export const createAnnotations = (minMax: MinMax[]): PluginOptionsByType<'line'>['annotation']['annotations'] => {
-        return minMax.flatMap((range) => [
-        {
-            type: 'point' as const,
-            xValue: range.xMin,
-            yValue: range.min,
-            backgroundColor: 'red',
-            radius: 5,
-            label: {
-            content: `Min: ${range.min}`,
-            position: 'start' as const,
-            enabled: true,
+    export const createAnnotations = (minMax: MinMax[], datasetIndices: number[]): PluginOptionsByType<'line'>['annotation']['annotations'] => {
+        return minMax.flatMap((range, index) => [
+            {
+                type: 'point' as const,
+                xValue: range.xMin,
+                yValue: range.min,
+                backgroundColor: 'blue',
+                radius: 5,
+                label: {
+                    content: `Min: ${range.min}`,
+                    position: 'start' as const,
+                    enabled: true,
+                },
+                drawTime: 'afterDatasetsDraw' as const,
+                display: (ctx) => ctx.chart.isDatasetVisible(datasetIndices[index]),
             },
-        },
-        {
-            type: 'point' as const,
-            xValue: range.xMax,
-            yValue: range.max,
-            backgroundColor: 'blue',
-            radius: 5,
-            label: {
-            content: `Max: ${range.max}`,
-            position: 'start' as const,
-            enabled: true,
+            {
+                type: 'point' as const,
+                xValue: range.xMax,
+                yValue: range.max,
+                backgroundColor: 'red',
+                radius: 5,
+                label: {
+                    content: `Max: ${range.max}`,
+                    position: 'start' as const,
+                    enabled: true,
+                },
+                drawTime: 'afterDatasetsDraw' as const,
+                display: (ctx) => ctx.chart.isDatasetVisible(datasetIndices[index]),
             },
-        },
         ]);
     };

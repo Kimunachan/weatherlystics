@@ -1,9 +1,16 @@
-import { getMinMaxPerDataset } from "@/utils/annotations";
+import { createAnnotations, getMinMaxPerDataset } from "@/utils/annotations";
 import { render, screen, waitFor } from "@/utils/customTestUtils";
 import { WeatherDataType } from "@/utils/types";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
+import { Chart as ChartJS } from "chart.js";
+import annotationPlugin from "chartjs-plugin-annotation";
 import Chart from "./chart";
+import { Line } from "react-chartjs-2";
+
+
+ChartJS.register(annotationPlugin);
+
 
 const axiosMock = new MockAdapter(axios);
 
@@ -63,6 +70,45 @@ describe("Chart", () => {
 
     await waitFor(() => {
       expect(container).toBeEmptyDOMElement();
+    });
+  });
+  it("hides annotations when the dataset is hidden", async () => {
+    const datasets = [
+      {
+        label: "Temperature",
+        data: [1, 2, 3],
+        hidden: false,
+      },
+    ];
+    const chartData = {
+      labels: ["Point 1", "Point 2", "Point 3"],
+      datasets: datasets,
+    };
+    const minMax = getMinMaxPerDataset(datasets);
+    const annotations = createAnnotations(minMax, datasets.map((_, idx) => idx));
+
+    const chartInstance = {
+      isDatasetVisible: jest.fn((index) => !datasets[index].hidden),
+      data: {
+        datasets: datasets,
+      },
+    };
+
+    render(<Line data={chartData} options={{ plugins: { annotation: { annotations } } }} />);
+    
+    // Initially, annotations should be visible
+    expect(chartInstance.isDatasetVisible(0)).toBe(true);
+    annotations.forEach(annotation => {
+      expect(annotation.display({ chart: chartInstance })).toBe(true);
+    });
+
+    // Simulate hiding the dataset
+    datasets[0].hidden = true;
+    
+    // Annotations should be hidden
+    expect(chartInstance.isDatasetVisible(0)).toBe(false);
+    annotations.forEach(annotation => {
+      expect(annotation.display({ chart: chartInstance })).toBe(false);
     });
   });
 });
