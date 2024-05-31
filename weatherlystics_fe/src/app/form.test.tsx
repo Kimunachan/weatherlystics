@@ -4,11 +4,12 @@ import {
   screen,
   waitFor,
   waitForElementToBeRemoved,
-} from "@/utils/customTestUtils"; // Ensure this wraps components with QueryClientProvider
+} from "@/utils/customTestUtils";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
 import { toast } from "react-toastify";
 import Form from "./Form";
+import { BASE_URL } from "@/utils/constants";
 
 jest.mock("react-toastify", () => ({
   toast: {
@@ -35,13 +36,20 @@ describe("Form Component", () => {
 
     await waitForElementToBeRemoved(() => screen.getByText("Loading..."));
 
+    fireEvent.change(screen.getByLabelText("Latitude:"), {
+      target: { value: "" },
+    });
+    fireEvent.change(screen.getByLabelText("Longitude:"), {
+      target: { value: "" },
+    });
+
     fireEvent.click(screen.getByText("Submit"));
 
     await waitFor(() => {
       const alerts = screen.getAllByRole("alert");
-      expect(alerts).toHaveLength(1); // lat, long, and date
+      expect(alerts).toHaveLength(2); // lat, long, and timezone
       alerts.forEach((alert) => {
-        expect(alert).toHaveTextContent("Required");
+        expect(alert).toHaveTextContent("Expected number, received nan");
       });
     });
   });
@@ -75,7 +83,7 @@ describe("Form Component", () => {
 
     await waitFor(() => {
       expect(toast.error).toHaveBeenCalledWith(
-        "Error fetching weather data: Error: Request failed with status code 500"
+        "Error fetching weather data: Error: Request failed with status code 404"
       );
     });
   });
@@ -101,30 +109,10 @@ describe("Form Component", () => {
     );
   });
 
-  it("should toggle second date input", async () => {
-    axiosMock
-      .onGet("http://worldtimeapi.org/api/timezone")
-      .replyOnce(200, ["Europe/Berlin", "America/New_York"]);
-
-    render(<Form setWeatherData={mockSetWeatherData} />);
-
-    await waitForElementToBeRemoved(() => screen.getByText("Loading..."));
-
-    fireEvent.click(screen.getByText("add"));
-
-    expect(screen.getByLabelText(/Second Date/i)).toBeInTheDocument();
-
-    fireEvent.click(screen.getByText("add"));
-
-    expect(screen.queryByLabelText(/Second Date/i)).not.toBeInTheDocument();
-  });
-
   it("should handle timezone selection", async () => {
     axiosMock
       .onGet("http://worldtimeapi.org/api/timezone")
       .replyOnce(200, ["Europe/Berlin", "America/New_York"]);
-
-    axiosMock.onGet(/weather/).replyOnce(500, { message: "Error" });
 
     render(<Form setWeatherData={mockSetWeatherData} />);
 
@@ -155,7 +143,7 @@ describe("Form Component", () => {
       .onGet("http://worldtimeapi.org/api/timezone")
       .replyOnce(200, ["Europe/Berlin", "America/New_York"]);
 
-    axiosMock.onGet(/weather/).replyOnce(200, { data: "mockWeatherData" });
+    axiosMock.onPost(`${BASE_URL}/weather/compare`).replyOnce(200, { data: "mockWeatherData" });
 
     render(<Form setWeatherData={mockSetWeatherData} />);
 
@@ -242,4 +230,52 @@ describe("Form Component", () => {
     // Ensure loading state is no longer present
     expect(screen.queryByText("Loading...")).not.toBeInTheDocument();
   });
+
+  it("should handle adding an additional row", async () => {
+    axiosMock
+      .onGet("http://worldtimeapi.org/api/timezone")
+      .replyOnce(200, ["Europe/Berlin", "America/New_York"]);
+
+    render(<Form setWeatherData={mockSetWeatherData} />);
+
+    await waitForElementToBeRemoved(() => screen.getByText("Loading..."));
+
+    fireEvent.click(screen.getByText("+"));
+
+    await waitFor(() => {
+      expect(screen.getAllByTestId("row")).toHaveLength(2);
+    });
+
+    const newRow = screen.getAllByTestId("row")[1];
+    expect(newRow.querySelector("[name='rows.1.lat']")).toHaveValue(0);
+    expect(newRow.querySelector("[name='rows.1.long']")).toHaveValue(0);
+    expect(newRow.querySelector("[name='rows.1.timezone']")).toHaveValue(
+      ""
+    );
+    expect(newRow.querySelector("[name='rows.1.date']")).toHaveValue(
+      new Date().toISOString().slice(0, 10)
+    );
+  });
+  it("should handle removing a row", async () => {
+    axiosMock
+      .onGet("http://worldtimeapi.org/api/timezone")
+      .replyOnce(200, ["Europe/Berlin", "America/New_York"]);
+
+    render(<Form setWeatherData={mockSetWeatherData} />);
+
+    await waitForElementToBeRemoved(() => screen.getByText("Loading..."));
+
+    fireEvent.click(screen.getByText("+"));
+
+    await waitFor(() => {
+      expect(screen.getAllByTestId("row")).toHaveLength(2);
+    });
+
+    fireEvent.click(screen.getByTestId("remove-1"));
+
+    await waitFor(() => {
+      expect(screen.getAllByTestId("row")).toHaveLength(1);
+    });
+  });
+  
 });

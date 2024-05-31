@@ -10,7 +10,7 @@ import Chart from "./chart";
 import TextChart from "./textChart";
 
 export default function Page() {
-  const [weatherData, setWeatherData] = useState<WeatherDataType>();
+  const [weatherData, setWeatherData] = useState<WeatherDataType | WeatherDataType[]>();
   const [showCharts, setShowCharts] = useState(true); // State to toggle between charts and text
 
   const handleToggle = (event: React.ChangeEvent<HTMLInputElement>) => {

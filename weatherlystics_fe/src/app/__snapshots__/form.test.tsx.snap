@@ -7,13 +7,14 @@ exports[`Form Component should render the form and interact correctly 1`] = `
 >
   <div
     class="form-row"
+    data-testid="row"
   >
     <label
       data-testid="Latitude"
     >
       Latitude:
       <input
-        name="lat"
+        name="rows.0.lat"
         step="1e-7"
         type="number"
       />
@@ -23,15 +24,11 @@ exports[`Form Component should render the form and interact correctly 1`] = `
     >
       Longitude:
       <input
-        name="long"
+        name="rows.0.long"
         step="1e-7"
         type="number"
       />
     </label>
-  </div>
-  <div
-    class="form-row"
-  >
     <label
       data-testid="Timezone"
     >
@@ -41,7 +38,7 @@ exports[`Form Component should render the form and interact correctly 1`] = `
       >
         <span
           class="css-1f43avz-a11yText-A11yText"
-          id="react-select-7-live-region"
+          id="react-select-6-live-region"
         />
         <span
           aria-atomic="false"
@@ -74,7 +71,7 @@ exports[`Form Component should render the form and interact correctly 1`] = `
                 autocomplete="off"
                 autocorrect="off"
                 class=""
-                id="react-select-7-input"
+                id="react-select-6-input"
                 role="combobox"
                 spellcheck="false"
                 style="opacity: 0; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
@@ -109,7 +106,22 @@ exports[`Form Component should render the form and interact correctly 1`] = `
             </div>
           </div>
         </div>
+        <input
+          name="rows.0.timezone"
+          type="hidden"
+          value="Europe/Berlin"
+        />
       </div>
+    </label>
+    <label>
+      Date:
+      <input
+        max="2024-06-07"
+        min="1940-01-01"
+        name="rows.0.date"
+        type="date"
+        value="2024-05-30"
+      />
     </label>
     <button
       class="normalButton"
@@ -117,22 +129,12 @@ exports[`Form Component should render the form and interact correctly 1`] = `
     >
       Use my location
     </button>
-  </div>
-  <div
-    class="form-row"
-  >
-    <label>
-      Date:
-      <input
-        name="date"
-        type="date"
-        value="2024-05-24"
-      />
-    </label>
     <button
       class="circleButton"
+      data-testid="add-0"
+      type="button"
     >
-      add
+      +
     </button>
   </div>
   <button

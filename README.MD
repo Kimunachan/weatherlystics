@@ -13,15 +13,13 @@ To run the applications locally, you need to have the following tools installed 
 
 - Node.js@v20.11.0^
 - npm@v10.1.0^ or yarn v1.22.19^
-- docker@v26.0.0^ with docker-compose@v2.26.1^ for the backend application
 
-To develope the applications, you need to have the following tools installed:
+To develop the applications, you need to have the following tools installed:
 
 Backend:
 
 - Node.js@v20.11.0^
 - npm@v10.1.0^ or yarn v1.22.19^
-- docker@v26.0.0^ with docker-compose@v2.26.1^
 - nestjs@v10.1.18^ globaly installed
 
 Frontend:

@@ -38,7 +38,8 @@ const config: Config = {
       lines: coverage,
     },
   },
-  coverageProvider: "v8",
+  coverageProvider: "babel",
+  coverageReporters: ["json", "lcov", "text", "clover"],
   testEnvironment: "jsdom",
   maxWorkers: "80%",
 };
