@@ -34,6 +34,7 @@ export class WeatherService {
     if (!dateRegex.test(date))
       throw new BadRequestException('Invalid date format');
     const diff = moment(date).diff(moment(), 'days');
+    this.logger.debug({ diff });
     if (diff < -7) url = 'https://archive-api.open-meteo.com/v1/archive';
     if (diff > 7)
       throw new BadRequestException('Date should be within 7 days from today');
@@ -79,7 +80,6 @@ export class WeatherService {
     const responses = await fetchWeatherApi(url, queryParams);
 
     const response = responses[0];
-
     const utcOffsetSeconds = response.utcOffsetSeconds();
     const timezone = response.timezone();
     const timezoneAbbreviation = response.timezoneAbbreviation();
@@ -89,6 +89,75 @@ export class WeatherService {
     const daily = response.daily()!;
     const hourly = response.hourly()!;
     const current = response.current()!;
+
+    if (diff < -7) {
+      const weatherData = {
+        hourly: {
+          time: range(
+            Number(hourly.time()),
+            Number(hourly.timeEnd()),
+            hourly.interval(),
+          ).map((t) => new Date((t + utcOffsetSeconds) * 1000)),
+          temperature2m: hourly.variables(0)!.valuesArray()!,
+          relativeHumidity2m: hourly.variables(1)!.valuesArray()!,
+          apparentTemperature: hourly.variables(2)!.valuesArray()!,
+        },
+        daily: {
+          time: range(
+            Number(daily.time()),
+            Number(daily.timeEnd()),
+            daily.interval(),
+          ).map((t) => new Date((t + utcOffsetSeconds) * 1000)),
+          weatherCode: daily.variables(0)!.valuesArray()!,
+          temperature2mMax: daily.variables(1)!.valuesArray()!,
+          temperature2mMin: daily.variables(2)!.valuesArray()!,
+          apparentTemperatureMax: daily.variables(3)!.valuesArray()!,
+          apparentTemperatureMin: daily.variables(4)!.valuesArray()!,
+        },
+      };
+
+      const hourlyMatched = [];
+      for (let i = 0; i < weatherData.hourly.time.length; i++) {
+        hourlyMatched.push({
+          time: weatherData.hourly.time[i],
+          temperature2m: weatherData.hourly.temperature2m[i],
+          relativeHumidity2m: weatherData.hourly.relativeHumidity2m[i],
+          apparentTemperature: weatherData.hourly.apparentTemperature[i],
+        });
+      }
+
+      const dailyMatched = [];
+      for (let i = 0; i < weatherData.daily.time.length; i++) {
+        dailyMatched.push({
+          time: weatherData.daily.time[i],
+          weatherCode: weatherData.daily.weatherCode[i],
+          temperature2mMax: weatherData.daily.temperature2mMax[i],
+          temperature2mMin: weatherData.daily.temperature2mMin[i],
+          apparentTemperatureMax: weatherData.daily.apparentTemperatureMax[i],
+          apparentTemperatureMin: weatherData.daily.apparentTemperatureMin[i],
+        });
+      }
+      await this.cacheManager.set(
+        `weather-${lat}-${lon}-${date}-${timezone_req}`,
+        {
+          latitude,
+          longitude,
+          timezone,
+          timezoneAbbreviation,
+          hourly: hourlyMatched,
+          daily: dailyMatched,
+        },
+        10 * 60 * 1000,
+      );
+      return {
+        latitude,
+        longitude,
+        timezone,
+        timezoneAbbreviation,
+        hourly: hourlyMatched,
+        daily: dailyMatched,
+      };
+    }
 
     const weatherData = {
       current: {
