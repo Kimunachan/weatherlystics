@@ -39,3 +39,14 @@ yarn build
 
 yarn start
 ```
+
+Libraries used:
+
+- [Axios](https://axios-http.com/docs/intro)
+- [moment](https://momentjs.com/)
+- [NestJS](https://nestjs.com/)
+- [Nestjs Chache Manager](https://docs.nestjs.com/techniques/caching)
+- [Open-Meteo](https://open-meteo.com/)
+- [Node.js](https://nodejs.org/)
+- [winston](https://github.com/winstonjs/winston)
+- [zod](https://zod.dev/)
