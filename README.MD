@@ -29,4 +29,4 @@ Frontend:
 
 ## License
 
-TBD
+MIT
